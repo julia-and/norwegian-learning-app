@@ -1,0 +1,46 @@
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3);
+}
+
+.notesField {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.notesLabel {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--color-text-secondary);
+}
+
+.notesTextarea {
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+  resize: vertical;
+  transition: border-color var(--transition-fast);
+}
+
+.notesTextarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+.notesTextarea::placeholder {
+  color: var(--color-text-tertiary);
+}

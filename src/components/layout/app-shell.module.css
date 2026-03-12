@@ -1,0 +1,25 @@
+.shell {
+  min-height: 100dvh;
+}
+
+.main {
+  margin-left: var(--sidebar-width);
+  min-height: 100dvh;
+}
+
+.content {
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  padding: var(--space-6);
+}
+
+@media (max-width: 768px) {
+  .main {
+    margin-left: 0;
+    padding-bottom: var(--mobile-nav-height);
+  }
+
+  .content {
+    padding: var(--space-4);
+  }
+}

@@ -1,0 +1,125 @@
+:root {
+  /* Colors — Light theme (warm, natural, airy) */
+  --color-bg: #FAFAF7;
+  --color-surface: #FFFFFF;
+  --color-surface-raised: #F5F3EF;
+  --color-text: #1A1D23;
+  --color-text-secondary: #6B7080;
+  --color-text-tertiary: #9B9EA8;
+  --color-primary: #2B5F9E;
+  --color-primary-hover: #234E84;
+  --color-primary-light: #EBF2FA;
+  --color-accent: #D4940A;
+  --color-accent-light: #FDF5E6;
+  --color-success: #3A8A5C;
+  --color-success-light: #EDF7F1;
+  --color-danger: #C4473A;
+  --color-danger-light: #FBEFEE;
+  --color-border: #E2E0DB;
+  --color-border-light: #EEEDEA;
+  --color-muted: #F0EDE8;
+  --color-overlay: rgba(0, 0, 0, 0.4);
+
+  /* Category colors */
+  --color-reading: #4A90D9;
+  --color-reading-light: #EBF2FA;
+  --color-writing: #45A065;
+  --color-writing-light: #EDF7F1;
+  --color-listening: #8B5FC7;
+  --color-listening-light: #F3EFF9;
+  --color-speaking: #E07B39;
+  --color-speaking-light: #FDF3EB;
+  --color-vocabulary: #C4473A;
+  --color-vocabulary-light: #FBEFEE;
+
+  /* Spacing (4px base) */
+  --space-0: 0;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  /* Typography */
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  --font-mono: 'SF Mono', 'Fira Code', 'Fira Mono', 'Roboto Mono', monospace;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-md: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 2rem;
+
+  --leading-tight: 1.25;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.75;
+
+  --weight-normal: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  /* Radii */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.12);
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-normal: 200ms ease;
+  --transition-slow: 300ms ease;
+
+  /* Layout */
+  --sidebar-width: 240px;
+  --content-max-width: 800px;
+  --header-height: 56px;
+  --mobile-nav-height: 64px;
+}
+
+[data-theme="dark"] {
+  --color-bg: #141518;
+  --color-surface: #1E2025;
+  --color-surface-raised: #272A30;
+  --color-text: #E8E6E1;
+  --color-text-secondary: #9B9EA8;
+  --color-text-tertiary: #6B7080;
+  --color-primary: #5B9ADF;
+  --color-primary-hover: #74AEEF;
+  --color-primary-light: #1C2A3D;
+  --color-accent: #E8B44A;
+  --color-accent-light: #2D2517;
+  --color-success: #5BBF80;
+  --color-success-light: #1A2B21;
+  --color-danger: #E06B5F;
+  --color-danger-light: #2D1C1A;
+  --color-border: #33363D;
+  --color-border-light: #292C32;
+  --color-muted: #23252B;
+  --color-overlay: rgba(0, 0, 0, 0.6);
+
+  --color-reading: #6BABEF;
+  --color-reading-light: #1C2A3D;
+  --color-writing: #6BC78A;
+  --color-writing-light: #1A2B21;
+  --color-listening: #A882DD;
+  --color-listening-light: #261E33;
+  --color-speaking: #F09A5E;
+  --color-speaking-light: #2D2115;
+  --color-vocabulary: #E06B5F;
+  --color-vocabulary-light: #2D1C1A;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.4);
+}

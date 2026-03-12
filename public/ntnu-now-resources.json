@@ -1,0 +1,931 @@
+{
+  "version": 1,
+  "generatedAt": "2026-03-03T21:34:54.538Z",
+  "attribution": "Norwegian on the Web by NTNU (ntnu.edu/now). Free educational resource.",
+  "resources": [
+    {
+      "id": "87f1837bc33f9573",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 1 – 10 1 En tur til oslo",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A1–A2 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A1",
+        "A2"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now1/10_1_En_tur_til_oslo.mp3"
+    },
+    {
+      "id": "ce9a70fcf363c0d7",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 1 – 10 2 Peter feirer jul i norge1",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A1–A2 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A1",
+        "A2"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now1/10_2_Peter_feirer_jul_i_norge1.mp3"
+    },
+    {
+      "id": "d429725e4816237d",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 1 – 10 2 Peter feirer jul i norge2",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A1–A2 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A1",
+        "A2"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now1/10_2_Peter_feirer_jul_i_norge2.mp3"
+    },
+    {
+      "id": "e65f197a2df84ee4",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 1 – 1anna",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A1–A2 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A1",
+        "A2"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now1/1anna.mp3"
+    },
+    {
+      "id": "1b3dff6b8eacd538",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 1 – 1ken",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A1–A2 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A1",
+        "A2"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now1/1ken.mp3"
+    },
+    {
+      "id": "4cc0d394c22c520f",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 1 – 1maria",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A1–A2 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A1",
+        "A2"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now1/1maria.mp3"
+    },
+    {
+      "id": "9a17a80f6f361c6d",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 1 – 1peter",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A1–A2 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A1",
+        "A2"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now1/1peter.mp3"
+    },
+    {
+      "id": "286d666e03db6607",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 1 – 2anna",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A1–A2 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A1",
+        "A2"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now1/2anna.mp3"
+    },
+    {
+      "id": "257beafe12bd9e7d",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 1 – 2ken",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A1–A2 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A1",
+        "A2"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now1/2ken.mp3"
+    },
+    {
+      "id": "2a2c11c0c9127058",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 1 – 2maria",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A1–A2 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A1",
+        "A2"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now1/2maria.mp3"
+    },
+    {
+      "id": "f7a8645fd237d959",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 1 – 2peter",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A1–A2 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A1",
+        "A2"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now1/2peter.mp3"
+    },
+    {
+      "id": "4023fba8e786bacb",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 1 – 3anna",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A1–A2 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A1",
+        "A2"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now1/3anna.mp3"
+    },
+    {
+      "id": "cb81fdafeb98b1c2",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 1 – 3ken",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A1–A2 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A1",
+        "A2"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now1/3ken.mp3"
+    },
+    {
+      "id": "9123b44749520b74",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 1 – 3maria",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A1–A2 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A1",
+        "A2"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now1/3maria.mp3"
+    },
+    {
+      "id": "8e8e0eb4c97f2fb4",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 1 – 3peter",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A1–A2 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A1",
+        "A2"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now1/3peter.mp3"
+    },
+    {
+      "id": "f22f861e95775f09",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 1 – 4anna",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A1–A2 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A1",
+        "A2"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now1/4anna.mp3"
+    },
+    {
+      "id": "5bbf6649c6238b12",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 1 – 4ken",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A1–A2 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A1",
+        "A2"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now1/4ken.mp3"
+    },
+    {
+      "id": "0c134d6f196440fa",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 1 – 4maria",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A1–A2 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A1",
+        "A2"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now1/4maria.mp3"
+    },
+    {
+      "id": "4157b60cd6538305",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 1 – 4peter",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A1–A2 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A1",
+        "A2"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now1/4peter.mp3"
+    },
+    {
+      "id": "aa8845a642e4f7fc",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 1 – 5anna",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A1–A2 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A1",
+        "A2"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now1/5anna.mp3"
+    },
+    {
+      "id": "a554170f221e5408",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 1 – 5ken",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A1–A2 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A1",
+        "A2"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now1/5ken.mp3"
+    },
+    {
+      "id": "b2d6f587cbe61666",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 1 – 5maria",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A1–A2 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A1",
+        "A2"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now1/5maria.mp3"
+    },
+    {
+      "id": "43305b63c24c31f4",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 1 – 5peter",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A1–A2 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A1",
+        "A2"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now1/5peter.mp3"
+    },
+    {
+      "id": "96d867b3c2be980e",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 1 – 6anna",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A1–A2 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A1",
+        "A2"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now1/6anna.mp3"
+    },
+    {
+      "id": "aa90e02fe0bcc067",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 1 – 6ken",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A1–A2 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A1",
+        "A2"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now1/6ken.mp3"
+    },
+    {
+      "id": "8de73e1b7cf28a73",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 1 – 6maria",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A1–A2 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A1",
+        "A2"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now1/6maria.mp3"
+    },
+    {
+      "id": "28d77629fc62a6a6",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 1 – 6peter",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A1–A2 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A1",
+        "A2"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now1/6peter.mp3"
+    },
+    {
+      "id": "94a28e0ca58134e6",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 1 – 7 1 familie",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A1–A2 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A1",
+        "A2"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now1/7_1_familie.mp3"
+    },
+    {
+      "id": "8c85e29e169b90a0",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 1 – 7 2 fritid",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A1–A2 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A1",
+        "A2"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now1/7_2_fritid.mp3"
+    },
+    {
+      "id": "8ec5bcdbdda40ce5",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 1 – 8 1 paa hytta",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A1–A2 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A1",
+        "A2"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now1/8_1_paa_hytta.mp3"
+    },
+    {
+      "id": "af1af20b52b1c00a",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 1 – 8 1 paa tur",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A1–A2 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A1",
+        "A2"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now1/8_1_paa_tur.mp3"
+    },
+    {
+      "id": "08b117c21a0c5cf7",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 1 – 8 2 peter er syk",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A1–A2 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A1",
+        "A2"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now1/8_2_peter_er_syk.mp3"
+    },
+    {
+      "id": "ae5802366b88a275",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 1 – 8 2 peter ringer legevakt",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A1–A2 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A1",
+        "A2"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now1/8_2_peter_ringer_legevakt.mp3"
+    },
+    {
+      "id": "305c239a6ca967a1",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 1 – 9 1 paa kontoret",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A1–A2 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A1",
+        "A2"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now1/9_1_paa_kontoret.mp3"
+    },
+    {
+      "id": "2e39ffa890e406a3",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 1 – 9 2 konferanse",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A1–A2 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A1",
+        "A2"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now1/9_2_konferanse.mp3"
+    },
+    {
+      "id": "cd58b8f521417f20",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 2 – 01A",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A2–B1 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A2",
+        "B1"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now2/01A.mp3"
+    },
+    {
+      "id": "bbb15f01b0e614f0",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 2 – 01B",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A2–B1 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A2",
+        "B1"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now2/01B.mp3"
+    },
+    {
+      "id": "0b656b347353d386",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 2 – 01X",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A2–B1 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A2",
+        "B1"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now2/01X.mp3"
+    },
+    {
+      "id": "9b5ab939a5c4ae86",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 2 – 02A",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A2–B1 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A2",
+        "B1"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now2/02A.mp3"
+    },
+    {
+      "id": "180af9f57b47d568",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 2 – 02B",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A2–B1 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A2",
+        "B1"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now2/02B.mp3"
+    },
+    {
+      "id": "4585881a8a3ce12f",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 2 – 02X",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A2–B1 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A2",
+        "B1"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now2/02X.mp3"
+    },
+    {
+      "id": "fa83f52a40b74bce",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 2 – 03A",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A2–B1 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A2",
+        "B1"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now2/03A.mp3"
+    },
+    {
+      "id": "fa7db102abda88fc",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 2 – 03B",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A2–B1 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A2",
+        "B1"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now2/03B.mp3"
+    },
+    {
+      "id": "c89b1383961dda83",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 2 – 03X",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A2–B1 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A2",
+        "B1"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now2/03X.mp3"
+    },
+    {
+      "id": "d1be32e2846868a5",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 2 – 04A",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A2–B1 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A2",
+        "B1"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now2/04A.mp3"
+    },
+    {
+      "id": "a051d20c5c1e9a2d",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 2 – 04B",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A2–B1 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A2",
+        "B1"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now2/04B.mp3"
+    },
+    {
+      "id": "6fb67f83cb65dbc0",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 2 – 04X",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A2–B1 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A2",
+        "B1"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now2/04X.mp3"
+    },
+    {
+      "id": "626c9fbec675b8a1",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 2 – 05A",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A2–B1 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A2",
+        "B1"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now2/05A.mp3"
+    },
+    {
+      "id": "e2124880f6306faf",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 2 – 05B",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A2–B1 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A2",
+        "B1"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now2/05B.mp3"
+    },
+    {
+      "id": "5c17ff971a8762f7",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 2 – 05X",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A2–B1 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A2",
+        "B1"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now2/05X.mp3"
+    },
+    {
+      "id": "b58ffd288e54bda6",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 2 – 06A",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A2–B1 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A2",
+        "B1"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now2/06A.mp3"
+    },
+    {
+      "id": "2f981fb402b81464",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 2 – 06B",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A2–B1 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A2",
+        "B1"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now2/06B.mp3"
+    },
+    {
+      "id": "6164026c56ef546d",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 2 – 06X",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A2–B1 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A2",
+        "B1"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now2/06X.mp3"
+    },
+    {
+      "id": "71a3557d4027936c",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 2 – 07A",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A2–B1 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A2",
+        "B1"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now2/07A.mp3"
+    },
+    {
+      "id": "fce233ed543d44f4",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 2 – 07B",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A2–B1 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A2",
+        "B1"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now2/07B.mp3"
+    },
+    {
+      "id": "4ac9c824da8070cf",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 2 – 07X",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A2–B1 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A2",
+        "B1"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now2/07X.mp3"
+    },
+    {
+      "id": "4191cd9e83f960dd",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 2 – 08A",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A2–B1 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A2",
+        "B1"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now2/08A.mp3"
+    },
+    {
+      "id": "ad9eba6c3d4704a1",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 2 – 08B",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A2–B1 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A2",
+        "B1"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now2/08B.mp3"
+    },
+    {
+      "id": "d63276adec010248",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 2 – 08X",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A2–B1 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A2",
+        "B1"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now2/08X.mp3"
+    },
+    {
+      "id": "3f147ddf14ce9493",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 2 – 09A",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A2–B1 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A2",
+        "B1"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now2/09A.mp3"
+    },
+    {
+      "id": "8799ee6d23274d61",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 2 – 09B",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A2–B1 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A2",
+        "B1"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now2/09B.mp3"
+    },
+    {
+      "id": "3444efd6f1ff549b",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 2 – 09X",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A2–B1 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A2",
+        "B1"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now2/09X.mp3"
+    },
+    {
+      "id": "618dcc1bc1aca76e",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 2 – 09Yc",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A2–B1 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A2",
+        "B1"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now2/09Yc.mp3"
+    },
+    {
+      "id": "3efa7d82d5b16e38",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 2 – 10A",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A2–B1 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A2",
+        "B1"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now2/10A.mp3"
+    },
+    {
+      "id": "8f5e8e4080cf9e50",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 2 – 10B",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A2–B1 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A2",
+        "B1"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now2/10B.mp3"
+    },
+    {
+      "id": "7f16c530a1c2640d",
+      "sourceId": "ntnu-now",
+      "url": "https://www.ntnu.edu/now",
+      "title": "NoW 2 – 10X",
+      "description": "Listening exercise from Norwegian on the Web (NTNU), A2–B1 level. © NTNU — used for educational purposes.",
+      "contentType": "listening",
+      "cefrLevels": [
+        "A2",
+        "B1"
+      ],
+      "publishedAt": "2023-09-01T00:00:00Z",
+      "audioUrl": "https://lang-learning-tracking-app.s3-website.fr-par.scw.cloud/audio/ntnu-now/now2/10X.mp3"
+    }
+  ]
+}

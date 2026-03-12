@@ -1,0 +1,61 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  white-space: nowrap;
+  line-height: 1.5;
+}
+
+.default {
+  background: var(--color-muted);
+  color: var(--color-text-secondary);
+}
+
+.primary {
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+}
+
+.success {
+  background: var(--color-success-light);
+  color: var(--color-success);
+}
+
+.accent {
+  background: var(--color-accent-light);
+  color: var(--color-accent);
+}
+
+.danger {
+  background: var(--color-danger-light);
+  color: var(--color-danger);
+}
+
+.reading {
+  background: var(--color-reading-light);
+  color: var(--color-reading);
+}
+
+.writing {
+  background: var(--color-writing-light);
+  color: var(--color-writing);
+}
+
+.listening {
+  background: var(--color-listening-light);
+  color: var(--color-listening);
+}
+
+.speaking {
+  background: var(--color-speaking-light);
+  color: var(--color-speaking);
+}
+
+.vocabulary {
+  background: var(--color-vocabulary-light);
+  color: var(--color-vocabulary);
+}

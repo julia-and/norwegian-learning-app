@@ -1,0 +1,256 @@
+{
+  "version": 1,
+  "generatedAt": "2026-03-02T12:00:00Z",
+  "resources": [
+    {
+      "id": "kt-001",
+      "sourceId": "klar-tale",
+      "url": "https://www.klartale.no/norge/",
+      "title": "Nyheter fra Norge",
+      "description": "Enkle nyheter fra hele Norge, skrevet i klart språk.",
+      "contentType": "reading",
+      "cefrLevels": ["A2", "B1"],
+      "publishedAt": "2026-03-01T10:00:00Z"
+    },
+    {
+      "id": "kt-002",
+      "sourceId": "klar-tale",
+      "url": "https://www.klartale.no/verden/",
+      "title": "Nyheter fra verden",
+      "description": "Internasjonale nyheter forklart på en enkel måte.",
+      "contentType": "reading",
+      "cefrLevels": ["A2", "B1"],
+      "publishedAt": "2026-03-01T09:00:00Z"
+    },
+    {
+      "id": "kt-003",
+      "sourceId": "klar-tale",
+      "url": "https://www.klartale.no/sport/",
+      "title": "Siste nytt fra sport",
+      "description": "Sportsnyheter skrevet i enkelt norsk. Fotball, ski og mer.",
+      "contentType": "reading",
+      "cefrLevels": ["A2", "B1"],
+      "publishedAt": "2026-02-28T14:00:00Z"
+    },
+    {
+      "id": "kt-004",
+      "sourceId": "klar-tale-audio",
+      "url": "https://www.klartale.no/kultur/",
+      "title": "Kultur og underholdning",
+      "description": "Nyheter om film, musikk og kultur i Norge.",
+      "contentType": "both",
+      "cefrLevels": ["A2", "B1"],
+      "publishedAt": "2026-02-27T11:00:00Z"
+    },
+    {
+      "id": "nrk-kultur-001",
+      "sourceId": "nrk-nyheter",
+      "url": "https://www.nrk.no/kultur/",
+      "title": "Ny norsk film får internasjonal oppmerksomhet",
+      "description": "En ny norsk film har blitt valgt ut til en stor internasjonal filmfestival.",
+      "contentType": "reading",
+      "cefrLevels": ["B1", "B2"],
+      "publishedAt": "2026-03-02T08:00:00Z"
+    },
+    {
+      "id": "nrk-livsstil-001",
+      "sourceId": "nrk-nyheter",
+      "url": "https://www.nrk.no/livsstil/",
+      "title": "Slik lager du den perfekte skitur",
+      "description": "Tips og råd for å få mest mulig ut av skituren i vinterferien.",
+      "contentType": "reading",
+      "cefrLevels": ["B1", "B2"],
+      "publishedAt": "2026-03-01T07:00:00Z"
+    },
+    {
+      "id": "lnn-001",
+      "sourceId": "laer-norsk-naa",
+      "url": "https://laernorsknaa.com",
+      "title": "Dagliglivet i Norge",
+      "description": "Lær om hverdagen i Norge. Sakte og tydelig tale med forklaringer.",
+      "contentType": "listening",
+      "cefrLevels": ["B1", "B2"],
+      "publishedAt": "2026-02-25T10:00:00Z",
+      "durationMinutes": 15
+    },
+    {
+      "id": "lnn-002",
+      "sourceId": "laer-norsk-naa",
+      "url": "https://laernorsknaa.com",
+      "title": "Mat og drikke",
+      "description": "Lær norske ord for mat og drikke. Vanlige uttrykk på restaurant.",
+      "contentType": "listening",
+      "cefrLevels": ["B1", "B2"],
+      "publishedAt": "2026-02-18T10:00:00Z",
+      "durationMinutes": 12
+    },
+    {
+      "id": "lnn-003",
+      "sourceId": "laer-norsk-naa",
+      "url": "https://laernorsknaa.com",
+      "title": "Familien min",
+      "description": "Snakk om familien din på norsk. Grunnleggende vokabular og setninger.",
+      "contentType": "listening",
+      "cefrLevels": ["B1", "B2"],
+      "publishedAt": "2026-02-11T10:00:00Z",
+      "durationMinutes": 18
+    },
+    {
+      "id": "np-001",
+      "sourceId": "norskpodden",
+      "url": "https://podcasts.apple.com/podcast/norskpodden/id1539582792",
+      "title": "Hobbyer og fritid",
+      "description": "Samtale om hobbyer på norsk. Gode uttrykk for å snakke om fritiden.",
+      "contentType": "listening",
+      "cefrLevels": ["A2", "B1"],
+      "publishedAt": "2026-02-20T10:00:00Z",
+      "durationMinutes": 20
+    },
+    {
+      "id": "np-002",
+      "sourceId": "norskpodden",
+      "url": "https://podcasts.apple.com/podcast/norskpodden/id1539582792",
+      "title": "Reise i Norge",
+      "description": "Tips for reise i Norge. Lær nyttige ord og uttrykk for turister.",
+      "contentType": "listening",
+      "cefrLevels": ["A2", "B1"],
+      "publishedAt": "2026-02-13T10:00:00Z",
+      "durationMinutes": 22
+    },
+    {
+      "id": "np-003",
+      "sourceId": "norskpodden",
+      "url": "https://podcasts.apple.com/podcast/norskpodden/id1539582792",
+      "title": "Norsk kultur og tradisjoner",
+      "description": "Lær om norske tradisjoner som 17. mai, jul og påske.",
+      "contentType": "listening",
+      "cefrLevels": ["A2", "B1"],
+      "publishedAt": "2026-02-06T10:00:00Z",
+      "durationMinutes": 25
+    },
+    {
+      "id": "st-001",
+      "sourceId": "nrk-spraakteigen",
+      "url": "https://radio.nrk.no/podkast/spraakteigen",
+      "title": "Dialekter i Norge",
+      "description": "Utforsk de mange norske dialektene. Hvorfor snakker vi så forskjellig?",
+      "contentType": "listening",
+      "cefrLevels": ["B1", "B2"],
+      "publishedAt": "2026-02-22T10:00:00Z",
+      "durationMinutes": 28
+    },
+    {
+      "id": "st-002",
+      "sourceId": "nrk-spraakteigen",
+      "url": "https://radio.nrk.no/podkast/spraakteigen",
+      "title": "Nye ord i norsk",
+      "description": "Hvilke nye ord kommer inn i norsk? Språkrådet forklarer.",
+      "contentType": "listening",
+      "cefrLevels": ["B1", "B2"],
+      "publishedAt": "2026-02-15T10:00:00Z",
+      "durationMinutes": 30
+    },
+    {
+      "id": "st-003",
+      "sourceId": "nrk-spraakteigen",
+      "url": "https://radio.nrk.no/podkast/spraakteigen",
+      "title": "Bokmål og nynorsk",
+      "description": "Historien bak Norges to skriftspråk og hvordan de brukes i dag.",
+      "contentType": "listening",
+      "cefrLevels": ["B1", "B2"],
+      "publishedAt": "2026-02-08T10:00:00Z",
+      "durationMinutes": 32
+    },
+    {
+      "id": "nrk-n-001",
+      "sourceId": "nrk-nyheter",
+      "url": "https://www.nrk.no/nyheter/",
+      "title": "Stortinget vedtok ny lov",
+      "description": "Stortinget har vedtatt en ny lov som påvirker alle nordmenn.",
+      "contentType": "reading",
+      "cefrLevels": ["B1", "B2", "C1"],
+      "publishedAt": "2026-03-02T06:00:00Z"
+    },
+    {
+      "id": "nrk-n-002",
+      "sourceId": "nrk-nyheter",
+      "url": "https://www.nrk.no/nyheter/",
+      "title": "Klimaendringer i Arktis",
+      "description": "Ny forskning viser store endringer i det arktiske klimaet. Forskere er bekymret.",
+      "contentType": "reading",
+      "cefrLevels": ["B1", "B2", "C1"],
+      "publishedAt": "2026-03-01T15:00:00Z"
+    },
+    {
+      "id": "nrk-n-003",
+      "sourceId": "nrk-nyheter",
+      "url": "https://www.nrk.no/nyheter/",
+      "title": "Norsk økonomi i vekst",
+      "description": "Økonomien i Norge vokser raskere enn forventet, ifølge nye tall.",
+      "contentType": "reading",
+      "cefrLevels": ["B2", "C1"],
+      "publishedAt": "2026-02-28T12:00:00Z"
+    },
+    {
+      "id": "kt-005",
+      "sourceId": "klar-tale",
+      "url": "https://www.klartale.no/helse/",
+      "title": "Slik holder du deg frisk om vinteren",
+      "description": "Enkle tips for å holde seg frisk når det er kaldt ute.",
+      "contentType": "reading",
+      "cefrLevels": ["A2", "B1"],
+      "publishedAt": "2026-02-26T09:00:00Z"
+    },
+    {
+      "id": "lnn-004",
+      "sourceId": "laer-norsk-naa",
+      "url": "https://laernorsknaa.com",
+      "title": "Været i Norge",
+      "description": "Lær å snakke om været. Viktige ord som regn, sol, snø og vind.",
+      "contentType": "listening",
+      "cefrLevels": ["B1", "B2"],
+      "publishedAt": "2026-02-04T10:00:00Z",
+      "durationMinutes": 14
+    },
+    {
+      "id": "ola-001",
+      "sourceId": "ola-norwegian",
+      "url": "https://www.youtube.com/watch?v=example1",
+      "title": "Intermediate Norwegian Listening Practice #1",
+      "description": "Slow, clear Norwegian with visual context. Great for building comprehension at the intermediate level.",
+      "contentType": "listening",
+      "cefrLevels": ["A2", "B1"],
+      "publishedAt": "2026-02-20T12:00:00Z"
+    },
+    {
+      "id": "ola-002",
+      "sourceId": "ola-norwegian",
+      "url": "https://www.youtube.com/watch?v=example2",
+      "title": "Norwegian Listening Practice — Dagliglivet",
+      "description": "Comprehensible input about daily life in Norway. Simple vocabulary with context clues.",
+      "contentType": "listening",
+      "cefrLevels": ["A2", "B1"],
+      "publishedAt": "2026-02-10T12:00:00Z"
+    },
+    {
+      "id": "anita-001",
+      "sourceId": "norsk-med-anita",
+      "url": "https://www.youtube.com/watch?v=example3",
+      "title": "Norsk for nybegynnere — Frukt og grønnsaker",
+      "description": "Lær navn på frukt og grønnsaker med bilder. Veldig sakte og tydelig tale.",
+      "contentType": "listening",
+      "cefrLevels": ["A1", "A2"],
+      "publishedAt": "2026-02-15T12:00:00Z"
+    },
+    {
+      "id": "anita-002",
+      "sourceId": "norsk-med-anita",
+      "url": "https://www.youtube.com/watch?v=example4",
+      "title": "Norsk for nybegynnere — I butikken",
+      "description": "En enkel historie om å handle i butikken. Lær vanlige ord og uttrykk.",
+      "contentType": "listening",
+      "cefrLevels": ["A1", "A2"],
+      "publishedAt": "2026-02-05T12:00:00Z"
+    }
+  ]
+}

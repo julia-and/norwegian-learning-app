@@ -1,0 +1,8 @@
+{
+  "name": "norsk-tracker-correct",
+  "version": "1.0.0",
+  "description": "Scaleway Serverless Function — Norwegian writing correction proxy",
+  "type": "module",
+  "main": "handler.js",
+  "private": true
+}

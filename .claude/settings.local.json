@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:docs.ankiweb.net)",
+      "WebFetch(domain:github.com)",
+      "WebSearch",
+      "WebFetch(domain:www.scaleway.com)",
+      "WebFetch(domain:pavei.cappelendamm.no)",
+      "WebFetch(domain:www.norwegian-classes.com)",
+      "WebFetch(domain:pavei-oppgaver.cappelendamm.no)",
+      "WebFetch(domain:steinpastein.cappelendamm.no)",
+      "WebFetch(domain:www.ntnu.edu)",
+      "WebFetch(domain:www.hf.ntnu.no)",
+      "WebFetch(domain:languagelearning.site)"
+    ]
+  }
+}
