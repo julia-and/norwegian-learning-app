@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, BarChart3, BookOpen, Settings, Globe, PenLine, BookMarked, MessageSquare } from 'lucide-react';
+import { LayoutDashboard, BarChart3, BookOpen, Settings, Globe, PenLine, BookMarked, MessageSquare, ArrowLeftRight } from 'lucide-react';
 import styles from './mobile-nav.module.css';
 
 const NAV_ITEMS = [
@@ -10,6 +10,7 @@ const NAV_ITEMS = [
   { href: '/progress', label: 'Fremgang', icon: BarChart3 },
   { href: '/vocabulary', label: 'Ord', icon: BookOpen },
   { href: '/grammar', label: 'Grammatikk', icon: BookMarked },
+  { href: '/ordvalg', label: 'Ordvalg', icon: ArrowLeftRight },
   { href: '/resources', label: 'Ressurser', icon: Globe },
   { href: '/writing', label: 'Skriving', icon: PenLine },
   { href: '/conversation', label: 'Samtale', icon: MessageSquare },

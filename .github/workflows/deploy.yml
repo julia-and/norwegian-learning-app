@@ -1,0 +1,168 @@
+name: Deploy to Scaleway
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: deploy
+  cancel-in-progress: true
+
+jobs:
+  # ---------------------------------------------------------------------------
+  # Frontend — always builds, deploys only on success
+  # ---------------------------------------------------------------------------
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run build
+
+      - name: Deploy to Scaleway S3
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.SCW_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.SCW_SECRET_KEY }}
+          AWS_DEFAULT_REGION: fr-par
+          SCW_BUCKET: ${{ vars.SCW_BUCKET || 'lang-learning-tracking-app' }}
+          SCW_REGION: ${{ vars.SCW_REGION || 'fr-par' }}
+        run: |
+          ENDPOINT="https://s3.${SCW_REGION}.scw.cloud"
+
+          aws s3 sync out/ "s3://${SCW_BUCKET}/" \
+            --endpoint-url "${ENDPOINT}" \
+            --delete \
+            --exclude "*.wasm" \
+            --exclude "_next/static/*" \
+            --exclude "curated-resources.json" \
+            --exclude "audio/*"
+
+          aws s3 sync out/_next/static/ "s3://${SCW_BUCKET}/_next/static/" \
+            --endpoint-url "${ENDPOINT}" \
+            --cache-control "public, max-age=31536000, immutable"
+
+          aws s3 cp out/sql-wasm.wasm "s3://${SCW_BUCKET}/sql-wasm.wasm" \
+            --endpoint-url "${ENDPOINT}" \
+            --content-type "application/wasm" \
+            --cache-control "public, max-age=31536000, immutable"
+
+  # ---------------------------------------------------------------------------
+  # Functions — each only runs when its directory changes
+  # ---------------------------------------------------------------------------
+  detect-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      correct: ${{ steps.filter.outputs.correct }}
+      converse: ${{ steps.filter.outputs.converse }}
+      index-resources: ${{ steps.filter.outputs.index-resources }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            correct:
+              - 'functions/correct/**'
+            converse:
+              - 'functions/converse/**'
+            index-resources:
+              - 'functions/index-resources/**'
+
+  deploy-correct:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.correct == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Scaleway CLI
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/scaleway/scaleway-cli/master/scripts/get.sh | sh
+          scw version
+
+      - name: Deploy correct function
+        env:
+          SCW_ACCESS_KEY: ${{ secrets.SCW_ACCESS_KEY }}
+          SCW_SECRET_KEY: ${{ secrets.SCW_SECRET_KEY }}
+          SCW_DEFAULT_ORGANIZATION_ID: ${{ secrets.SCW_ORG_ID }}
+          SCW_DEFAULT_PROJECT_ID: ${{ secrets.SCW_PROJECT_ID }}
+          SCW_DEFAULT_REGION: fr-par
+          SCW_FUNCTION_NAMESPACE_ID: ${{ secrets.SCW_FUNCTION_NAMESPACE_ID }}
+        run: |
+          cd functions/correct
+          zip -r /tmp/correct.zip . -x '*.DS_Store'
+          scw function deploy \
+            namespace-id="$SCW_FUNCTION_NAMESPACE_ID" \
+            name="correct" \
+            runtime="node22" \
+            zip-file="/tmp/correct.zip"
+
+  deploy-converse:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.converse == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Scaleway CLI
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/scaleway/scaleway-cli/master/scripts/get.sh | sh
+          scw version
+
+      - name: Deploy converse function
+        env:
+          SCW_ACCESS_KEY: ${{ secrets.SCW_ACCESS_KEY }}
+          SCW_SECRET_KEY: ${{ secrets.SCW_SECRET_KEY }}
+          SCW_DEFAULT_ORGANIZATION_ID: ${{ secrets.SCW_ORG_ID }}
+          SCW_DEFAULT_PROJECT_ID: ${{ secrets.SCW_PROJECT_ID }}
+          SCW_DEFAULT_REGION: fr-par
+          SCW_FUNCTION_NAMESPACE_ID: ${{ secrets.SCW_FUNCTION_NAMESPACE_ID }}
+        run: |
+          cd functions/converse
+          zip -r /tmp/converse.zip . -x '*.DS_Store'
+          scw function deploy \
+            namespace-id="$SCW_FUNCTION_NAMESPACE_ID" \
+            name="converse" \
+            runtime="node22" \
+            zip-file="/tmp/converse.zip"
+
+  deploy-index-resources:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.index-resources == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Scaleway CLI
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/scaleway/scaleway-cli/master/scripts/get.sh | sh
+          scw version
+
+      - name: Deploy index-resources function
+        env:
+          SCW_ACCESS_KEY: ${{ secrets.SCW_ACCESS_KEY }}
+          SCW_SECRET_KEY: ${{ secrets.SCW_SECRET_KEY }}
+          SCW_DEFAULT_ORGANIZATION_ID: ${{ secrets.SCW_ORG_ID }}
+          SCW_DEFAULT_PROJECT_ID: ${{ secrets.SCW_PROJECT_ID }}
+          SCW_DEFAULT_REGION: fr-par
+          SCW_FUNCTION_NAMESPACE_ID: ${{ secrets.SCW_FUNCTION_NAMESPACE_ID }}
+        run: |
+          cd functions/index-resources
+          npm install --production
+          zip -r /tmp/index-resources.zip . -x '*.DS_Store' -x 'node_modules/.cache/*'
+          scw function deploy \
+            namespace-id="$SCW_FUNCTION_NAMESPACE_ID" \
+            name="index-resources" \
+            runtime="node22" \
+            zip-file="/tmp/index-resources.zip"
