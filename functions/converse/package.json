@@ -1,6 +1,6 @@
 {
   "name": "norsk-tracker-converse",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Scaleway Serverless Function — Norwegian conversation partner proxy",
   "type": "module",
   "main": "handler.js",
