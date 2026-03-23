@@ -134,6 +134,7 @@ export default function PrepositionsPage() {
     const score = items.filter(r => r.correct).length;
     try {
       await db.prepositionSessions.add({
+        id: crypto.randomUUID(),
         date: new Date().toISOString().slice(0, 10),
         level: preferredLevel,
         score,

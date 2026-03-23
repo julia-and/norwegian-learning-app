@@ -93,6 +93,15 @@ export interface GrammarProgress {
   userNotes?: string;
 }
 
+export interface PrepositionSession {
+  id: string;
+  date: string;
+  level: string;
+  score: number;
+  results: { exerciseId: string; userAnswer: string; correct: boolean }[];
+  completedAt: Date;
+}
+
 export interface ConversationSession {
   id: string;
   scenarioId: string;
@@ -116,6 +125,7 @@ class TrackerDB extends Dexie {
   difficultyRatings!: EntityTable<DifficultyRating, 'id'>;
   grammarProgress!: EntityTable<GrammarProgress, 'ruleId'>;
   conversationSessions!: EntityTable<ConversationSession, 'id'>;
+  prepositionSessions!: EntityTable<PrepositionSession, 'id'>;
 
   constructor() {
     super('norsk-tracker', { addons: [dexieCloud] });
@@ -199,6 +209,19 @@ class TrackerDB extends Dexie {
       difficultyRatings:    'id, sessionId, contentType, date, ratedAt',
       grammarProgress:      '&ruleId, status, updatedAt',
       conversationSessions: 'id, level, scenarioId, completedAt, createdAt',
+    });
+
+    this.version(9).stores({
+      practiceTasks:        'id, category, order, isActive',
+      dailyCheckoffs:       'id, taskId, date, [taskId+date]',
+      vocabEntries:         'id, norwegian, reviewStatus, category, createdAt',
+      timerSessions:        'id, category, date',
+      writingSubmissions:   'id, date, level, fluencyRating, createdAt',
+      consumedResources:    'id, consumedAt',
+      difficultyRatings:    'id, sessionId, contentType, date, ratedAt',
+      grammarProgress:      '&ruleId, status, updatedAt',
+      conversationSessions: 'id, level, scenarioId, completedAt, createdAt',
+      prepositionSessions:  'id, date, level, completedAt',
     });
   }
 }

@@ -81,6 +81,29 @@
   color: var(--color-text-tertiary);
 }
 
+/* Free play */
+.freePlayCard {
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-surface);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.freePlayInput {
+  width: 100%;
+  background: none;
+  border: none;
+  outline: none;
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  padding: 0;
+}
+
+.freePlayInput::placeholder {
+  color: var(--color-text-tertiary);
+}
+
 /* Writing area */
 .writingSection {
   display: flex;

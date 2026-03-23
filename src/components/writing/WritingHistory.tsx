@@ -31,8 +31,8 @@ export function WritingHistory() {
                 {format(parseISO(sub.date), 'd. MMM', { locale: nb })}
               </span>
               <span className={styles.itemTopic}>
-                {sub.promptId ? sub.promptText.slice(0, 60) : 'Fri skriving'}
-                {sub.promptText.length > 60 && sub.promptId ? '...' : ''}
+                {sub.promptId === null && <span className={styles.freeTag}>fri</span>}
+                {sub.promptText.slice(0, 60)}{sub.promptText.length > 60 ? '…' : ''}
               </span>
             </div>
             <div className={styles.itemRight}>

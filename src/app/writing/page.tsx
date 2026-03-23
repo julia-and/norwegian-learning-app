@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useMemo, useCallback, useRef } from 'react';
-import { Shuffle, ChevronDown, ChevronUp, RotateCcw, Clock } from 'lucide-react';
+import { Shuffle, ChevronDown, ChevronUp, RotateCcw, Clock, PenLine } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { WRITING_PROMPTS, type WritingPrompt } from '@/lib/prompts';
 import type { CEFRLevel } from '@/lib/resources';
@@ -24,6 +24,8 @@ export default function WritingPage() {
   const [phase, setPhase] = useState<WritingPhase>('write');
   const [preferredLevel] = usePreferredLevel();
   const [level, setLevel] = useState<CEFRLevel>(preferredLevel);
+  const [freePlay, setFreePlay] = useState(false);
+  const [customPrompt, setCustomPrompt] = useState('');
   const [prompt, setPrompt] = useState<WritingPrompt | null>(null);
   const [text, setText] = useState('');
   const [showTranslation, setShowTranslation] = useState(false);
@@ -92,8 +94,8 @@ export default function WritingPage() {
       } else {
         // No corrections — save immediately with empty self-corrections
         await saveSubmission({
-          promptId: prompt?.id ?? null,
-          promptText: prompt?.prompt ?? 'Fri skriving',
+          promptId: freePlay ? null : (prompt?.id ?? null),
+          promptText: freePlay ? (customPrompt.trim() || 'Fri skriving') : (prompt?.prompt ?? 'Fri skriving'),
           level,
           originalText: text,
           correctionResult: correction,
@@ -110,8 +112,8 @@ export default function WritingPage() {
   const handleSelfCorrectionComplete = async (attempts: SelfCorrectionAttempt[]) => {
     if (result) {
       await saveSubmission({
-        promptId: prompt?.id ?? null,
-        promptText: prompt?.prompt ?? 'Fri skriving',
+        promptId: freePlay ? null : (prompt?.id ?? null),
+        promptText: freePlay ? (customPrompt.trim() || 'Fri skriving') : (prompt?.prompt ?? 'Fri skriving'),
         level,
         originalText: text,
         correctionResult: result,
@@ -160,12 +162,31 @@ export default function WritingPage() {
                   </button>
                 ))}
               </div>
-              <Button variant="ghost" size="sm" onClick={pickRandom}>
-                <Shuffle size={14} /> Tilfeldig emne
+              {!freePlay && (
+                <Button variant="ghost" size="sm" onClick={pickRandom}>
+                  <Shuffle size={14} /> Tilfeldig emne
+                </Button>
+              )}
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setFreePlay(f => !f)}
+                style={freePlay ? { color: 'var(--color-primary)', fontWeight: 600 } : undefined}
+              >
+                <PenLine size={14} /> Fri skriving
               </Button>
             </div>
 
-            {prompt && (
+            {freePlay ? (
+              <div className={styles.freePlayCard}>
+                <input
+                  className={styles.freePlayInput}
+                  value={customPrompt}
+                  onChange={e => setCustomPrompt(e.target.value)}
+                  placeholder="Hva skriver du om? (valgfritt)"
+                />
+              </div>
+            ) : prompt && (
               <div className={styles.promptCard}>
                 <div className={styles.promptTopic}>{prompt.topic}</div>
                 <div className={styles.promptText}>{prompt.prompt}</div>
@@ -216,7 +237,7 @@ export default function WritingPage() {
             <div className={styles.writingFooter}>
               <span className={styles.wordCount}>
                 {wordCount} ord
-                {prompt ? ` / ~${prompt.wordCountTarget} mål` : ''}
+                {!freePlay && prompt ? ` / ~${prompt.wordCountTarget} mål` : ''}
                 {timerStarted.current && timer.status === 'running' && (
                   <span className={styles.timerDisplay}>
                     <Clock size={12} /> {formatDuration(timer.elapsed)}
