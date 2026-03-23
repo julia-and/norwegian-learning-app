@@ -25,8 +25,8 @@ set -euo pipefail
 #      Note the function ID from the output.
 #
 #   4. Set environment variables below or export them:
-#      export SCW_FUNCTION_NAMESPACE_ID=<your-namespace-id>
-#      export SCW_CONVERSE_FUNCTION_ID=<your-function-id>
+#      export SCW_FUNCTION_NAMESPACE_ID=0ccbab11-6348-439f-b60c-0bc77217bc71
+#      export SCW_CONVERSE_FUNCTION_ID=6a0b5320-3070-4697-a1e6-0b9540bbfb11
 #
 # Usage:
 #   ./scripts/deploy-converse.sh
