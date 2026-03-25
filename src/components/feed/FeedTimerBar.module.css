@@ -1,0 +1,61 @@
+.bar {
+  position: sticky;
+  bottom: 0;
+  z-index: 50;
+  background: var(--color-surface, #fff);
+  border-top: 1px solid var(--color-border, #e5e7eb);
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.label {
+  font-size: 13px;
+  color: var(--color-text-secondary, #6b7280);
+  font-weight: 500;
+}
+
+.elapsed {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-primary, #6366f1);
+  font-variant-numeric: tabular-nums;
+  min-width: 48px;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 6px;
+  padding: 5px 10px;
+  font-size: 13px;
+  color: var(--color-text-secondary, #6b7280);
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.btn:hover {
+  color: var(--color-text, #111827);
+  border-color: var(--color-text-muted, #9ca3af);
+}
+
+.stop {
+  color: var(--color-error, #ef4444);
+  border-color: var(--color-error, #ef4444);
+}
+
+.stop:hover {
+  background-color: rgba(239, 68, 68, 0.06);
+}

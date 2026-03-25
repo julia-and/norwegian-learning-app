@@ -115,6 +115,27 @@ export interface ConversationSession {
   completedAt?: Date;
 }
 
+export interface FeedComment {
+  author: string;
+  body: string;
+  upvotes: number;
+}
+
+export interface FeedPost {
+  id: string;
+  subreddit: string;
+  title: string;
+  body: string;
+  author: string;
+  upvotes: number;
+  comments: FeedComment[];
+  vocabulary: Record<string, string>;
+  level: string;
+  upvotedByUser: number; // 0 | 1 — IndexedDB doesn't index booleans
+  generatedAt: Date;
+  readAt?: Date;
+}
+
 class TrackerDB extends Dexie {
   practiceTasks!: EntityTable<PracticeTask, 'id'>;
   dailyCheckoffs!: EntityTable<DailyCheckoff, 'id'>;
@@ -126,6 +147,7 @@ class TrackerDB extends Dexie {
   grammarProgress!: EntityTable<GrammarProgress, 'ruleId'>;
   conversationSessions!: EntityTable<ConversationSession, 'id'>;
   prepositionSessions!: EntityTable<PrepositionSession, 'id'>;
+  feedPosts!: EntityTable<FeedPost, 'id'>;
 
   constructor() {
     super('norsk-tracker', { addons: [dexieCloud] });
@@ -222,6 +244,20 @@ class TrackerDB extends Dexie {
       grammarProgress:      '&ruleId, status, updatedAt',
       conversationSessions: 'id, level, scenarioId, completedAt, createdAt',
       prepositionSessions:  'id, date, level, completedAt',
+    });
+
+    this.version(10).stores({
+      practiceTasks:        'id, category, order, isActive',
+      dailyCheckoffs:       'id, taskId, date, [taskId+date]',
+      vocabEntries:         'id, norwegian, reviewStatus, category, createdAt',
+      timerSessions:        'id, category, date',
+      writingSubmissions:   'id, date, level, fluencyRating, createdAt',
+      consumedResources:    'id, consumedAt',
+      difficultyRatings:    'id, sessionId, contentType, date, ratedAt',
+      grammarProgress:      '&ruleId, status, updatedAt',
+      conversationSessions: 'id, level, scenarioId, completedAt, createdAt',
+      prepositionSessions:  'id, date, level, completedAt',
+      feedPosts:            'id, subreddit, level, generatedAt, upvotedByUser',
     });
   }
 }

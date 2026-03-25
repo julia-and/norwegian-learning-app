@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, BarChart3, BookOpen, Settings, Flame, Sun, Moon, Globe, PenLine, BookMarked, MessageSquare, ArrowLeftRight } from 'lucide-react';
+import { LayoutDashboard, BarChart3, BookOpen, Settings, Flame, Sun, Moon, Globe, PenLine, BookMarked, MessageSquare, ArrowLeftRight, Newspaper } from 'lucide-react';
 import { useTheme } from './ThemeProvider';
 import styles from './sidebar.module.css';
 
@@ -13,6 +13,7 @@ const NAV_ITEMS = [
   { href: '/grammar', label: 'Grammatikk', icon: BookMarked },
   { href: '/ordvalg', label: 'Ordvalg', icon: ArrowLeftRight },
   { href: '/resources', label: 'Ressurser', icon: Globe },
+  { href: '/feed', label: 'Lesefeed', icon: Newspaper },
   { href: '/writing', label: 'Skriving', icon: PenLine },
   { href: '/conversation', label: 'Samtale', icon: MessageSquare },
   { href: '/settings', label: 'Innstillinger', icon: Settings },
