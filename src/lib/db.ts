@@ -246,7 +246,11 @@ class TrackerDB extends Dexie {
       prepositionSessions:  'id, date, level, completedAt',
     });
 
-    this.version(10).stores({
+    // v10 skipped — Dexie Cloud uses verno×2 for real IDB versions and inserts its own
+    // internal migration at IDB v19 (between our v9→v10), which conflicts with an existing
+    // table's primary key. Jumping to v11 (IDB v22) avoids this collision.
+
+    this.version(11).stores({
       practiceTasks:        'id, category, order, isActive',
       dailyCheckoffs:       'id, taskId, date, [taskId+date]',
       vocabEntries:         'id, norwegian, reviewStatus, category, createdAt',

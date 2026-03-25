@@ -11,7 +11,9 @@
       "WebFetch(domain:steinpastein.cappelendamm.no)",
       "WebFetch(domain:www.ntnu.edu)",
       "WebFetch(domain:www.hf.ntnu.no)",
-      "WebFetch(domain:languagelearning.site)"
+      "WebFetch(domain:languagelearning.site)",
+      "Bash(npx tsc:*)",
+      "Bash(ls /Users/julia/Code/claude/tracker/*.json)"
     ]
   }
 }
