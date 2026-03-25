@@ -1,0 +1,8 @@
+{
+  "name": "norsk-tracker-generate-feed",
+  "version": "1.0.0",
+  "description": "Scaleway Serverless Function — Norwegian feed post generator",
+  "type": "module",
+  "main": "handler.js",
+  "private": true
+}
