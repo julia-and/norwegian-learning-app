@@ -87,7 +87,8 @@ export interface DifficultyRating {
 }
 
 export interface GrammarProgress {
-  ruleId: string;
+  id: string;      // UUID primary key — required for Dexie Cloud sync
+  ruleId: string;  // semantic rule identifier (unique secondary index)
   status?: 'learning' | 'known';
   updatedAt: Date;
   userNotes?: string;
@@ -144,7 +145,7 @@ class TrackerDB extends Dexie {
   writingSubmissions!: EntityTable<WritingSubmission, 'id'>;
   consumedResources!: EntityTable<ConsumedResource, 'id'>;
   difficultyRatings!: EntityTable<DifficultyRating, 'id'>;
-  grammarProgress!: EntityTable<GrammarProgress, 'ruleId'>;
+  grammarProgress!: EntityTable<GrammarProgress, 'id'>;
   conversationSessions!: EntityTable<ConversationSession, 'id'>;
   prepositionSessions!: EntityTable<PrepositionSession, 'id'>;
   feedPosts!: EntityTable<FeedPost, 'id'>;
@@ -246,10 +247,29 @@ class TrackerDB extends Dexie {
       prepositionSessions:  'id, date, level, completedAt',
     });
 
-    // v10 skipped — Dexie Cloud uses verno×2 for real IDB versions and inserts its own
-    // internal migration at IDB v19 (between our v9→v10), which conflicts with an existing
-    // table's primary key. Jumping to v11 (IDB v22) avoids this collision.
+    // v10: give grammarProgress a UUID primary key so Dexie Cloud can sync it.
+    // Previously it used the semantic ruleId as primary key; Dexie Cloud tried to
+    // replace it with a generated UUID on login, hitting "changing primary key".
+    this.version(10).stores({
+      practiceTasks:        'id, category, order, isActive',
+      dailyCheckoffs:       'id, taskId, date, [taskId+date]',
+      vocabEntries:         'id, norwegian, reviewStatus, category, createdAt',
+      timerSessions:        'id, category, date',
+      writingSubmissions:   'id, date, level, fluencyRating, createdAt',
+      consumedResources:    'id, consumedAt',
+      difficultyRatings:    'id, sessionId, contentType, date, ratedAt',
+      grammarProgress:      'id, &ruleId, status, updatedAt',
+      conversationSessions: 'id, level, scenarioId, completedAt, createdAt',
+      prepositionSessions:  'id, date, level, completedAt',
+    }).upgrade(async tx => {
+      await tx.table('grammarProgress').toCollection().modify((record: GrammarProgress) => {
+        if (!record.id) {
+          record.id = crypto.randomUUID();
+        }
+      });
+    });
 
+    // v11: add feedPosts table (lesefeed feature).
     this.version(11).stores({
       practiceTasks:        'id, category, order, isActive',
       dailyCheckoffs:       'id, taskId, date, [taskId+date]',
@@ -258,7 +278,7 @@ class TrackerDB extends Dexie {
       writingSubmissions:   'id, date, level, fluencyRating, createdAt',
       consumedResources:    'id, consumedAt',
       difficultyRatings:    'id, sessionId, contentType, date, ratedAt',
-      grammarProgress:      '&ruleId, status, updatedAt',
+      grammarProgress:      'id, &ruleId, status, updatedAt',
       conversationSessions: 'id, level, scenarioId, completedAt, createdAt',
       prepositionSessions:  'id, date, level, completedAt',
       feedPosts:            'id, subreddit, level, generatedAt, upvotedByUser',

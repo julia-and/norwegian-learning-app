@@ -160,6 +160,7 @@ export default function SettingsPage() {
             await db.grammarProgress.clear();
             await db.grammarProgress.bulkPut(data.grammarProgress.map((r: Record<string, unknown>) => ({
               ...r,
+              id: (r.id as string) ?? crypto.randomUUID(),
               updatedAt: new Date(r.updatedAt as string),
             })));
           }
