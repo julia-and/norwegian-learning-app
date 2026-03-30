@@ -91,31 +91,24 @@ export function useGrammar(): UseGrammarReturn {
   }, [search, levelFilter, categoryFilter]);
 
   const setMastery = async (ruleId: string, status: 'learning' | 'known' | null) => {
-    const existing = await db.grammarProgress.where('ruleId').equals(ruleId).first();
+    const existing = await db.grammarProgress.get(ruleId);
     if (status === null) {
       if (existing?.userNotes) {
         // Keep the row for the notes, just clear the status
         await db.grammarProgress.put({ ...existing, status: undefined, updatedAt: new Date() });
       } else {
-        if (existing) await db.grammarProgress.delete(existing.id);
+        await db.grammarProgress.delete(ruleId);
       }
     } else {
-      await db.grammarProgress.put({
-        id: existing?.id ?? crypto.randomUUID(),
-        ruleId,
-        ...existing,
-        status,
-        updatedAt: new Date(),
-      });
+      await db.grammarProgress.put({ ruleId, ...existing, status, updatedAt: new Date() });
     }
   };
 
   const setNote = async (ruleId: string, note: string) => {
-    const existing = await db.grammarProgress.where('ruleId').equals(ruleId).first();
+    const existing = await db.grammarProgress.get(ruleId);
     const userNotes = note.trim() || undefined;
     if (!existing && !userNotes) return;
     await db.grammarProgress.put({
-      id: existing?.id ?? crypto.randomUUID(),
       ruleId,
       ...existing,
       userNotes,

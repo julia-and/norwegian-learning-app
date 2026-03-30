@@ -13,7 +13,11 @@
       "WebFetch(domain:www.hf.ntnu.no)",
       "WebFetch(domain:languagelearning.site)",
       "Bash(npx tsc:*)",
-      "Bash(ls /Users/julia/Code/claude/tracker/*.json)"
+      "Bash(ls /Users/julia/Code/claude/tracker/*.json)",
+      "mcp__plugin_playwright_playwright__browser_console_messages",
+      "mcp__plugin_playwright_playwright__browser_evaluate",
+      "mcp__plugin_playwright_playwright__browser_network_requests",
+      "mcp__plugin_playwright_playwright__browser_navigate"
     ]
   }
 }

@@ -87,8 +87,7 @@ export interface DifficultyRating {
 }
 
 export interface GrammarProgress {
-  id: string;      // UUID primary key — required for Dexie Cloud sync
-  ruleId: string;  // semantic rule identifier (unique secondary index)
+  ruleId: string;
   status?: 'learning' | 'known';
   updatedAt: Date;
   userNotes?: string;
@@ -145,7 +144,7 @@ class TrackerDB extends Dexie {
   writingSubmissions!: EntityTable<WritingSubmission, 'id'>;
   consumedResources!: EntityTable<ConsumedResource, 'id'>;
   difficultyRatings!: EntityTable<DifficultyRating, 'id'>;
-  grammarProgress!: EntityTable<GrammarProgress, 'id'>;
+  grammarProgress!: EntityTable<GrammarProgress, 'ruleId'>;
   conversationSessions!: EntityTable<ConversationSession, 'id'>;
   prepositionSessions!: EntityTable<PrepositionSession, 'id'>;
   feedPosts!: EntityTable<FeedPost, 'id'>;
@@ -279,6 +278,25 @@ class TrackerDB extends Dexie {
       consumedResources:    'id, consumedAt',
       difficultyRatings:    'id, sessionId, contentType, date, ratedAt',
       grammarProgress:      'id, &ruleId, status, updatedAt',
+      conversationSessions: 'id, level, scenarioId, completedAt, createdAt',
+      prepositionSessions:  'id, date, level, completedAt',
+      feedPosts:            'id, subreddit, level, generatedAt, upvotedByUser',
+    });
+
+    // v12: revert grammarProgress primary key back to ruleId.
+    // v10 changed keyPath from ruleId → id, which caused IndexedDB to drop and
+    // recreate the store (wiping local data) and broke Dexie Cloud sync because
+    // cloud-side records are keyed by ruleId. This restores the original schema
+    // so cloud resync succeeds.
+    this.version(12).stores({
+      practiceTasks:        'id, category, order, isActive',
+      dailyCheckoffs:       'id, taskId, date, [taskId+date]',
+      vocabEntries:         'id, norwegian, reviewStatus, category, createdAt',
+      timerSessions:        'id, category, date',
+      writingSubmissions:   'id, date, level, fluencyRating, createdAt',
+      consumedResources:    'id, consumedAt',
+      difficultyRatings:    'id, sessionId, contentType, date, ratedAt',
+      grammarProgress:      '&ruleId, status, updatedAt',
       conversationSessions: 'id, level, scenarioId, completedAt, createdAt',
       prepositionSessions:  'id, date, level, completedAt',
       feedPosts:            'id, subreddit, level, generatedAt, upvotedByUser',
