@@ -260,13 +260,7 @@ class TrackerDB extends Dexie {
       grammarProgress:      'id, &ruleId, status, updatedAt',
       conversationSessions: 'id, level, scenarioId, completedAt, createdAt',
       prepositionSessions:  'id, date, level, completedAt',
-    }).upgrade(async tx => {
-      await tx.table('grammarProgress').toCollection().modify((record: GrammarProgress) => {
-        if (!record.id) {
-          record.id = crypto.randomUUID();
-        }
-      });
-    });
+});
 
     // v11: add feedPosts table (lesefeed feature).
     this.version(11).stores({
