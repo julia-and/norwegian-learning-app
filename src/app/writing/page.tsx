@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, useMemo, useCallback, useRef } from 'react';
+import { useState, useMemo, useCallback, useRef, useEffect } from 'react';
 import { Shuffle, ChevronDown, ChevronUp, RotateCcw, Clock, PenLine } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
-import { WRITING_PROMPTS, type WritingPrompt } from '@/lib/prompts';
+import { loadWritingPrompts, type WritingPrompt } from '@/lib/prompts';
 import type { CEFRLevel } from '@/lib/resources';
 import { correctNorwegianText, type CorrectionResult } from '@/lib/claude';
 import { WritingResults } from '@/components/writing/WritingResults';
@@ -32,6 +32,9 @@ export default function WritingPage() {
   const [result, setResult] = useState<CorrectionResult | null>(null);
   const [error, setError] = useState<string | null>(null);
 
+  const [allPrompts, setAllPrompts] = useState<WritingPrompt[]>([]);
+  useEffect(() => { loadWritingPrompts().then(setAllPrompts); }, []);
+
   const { saveSubmission } = useWritingHistory();
   const timer = useTimer();
   const timerStarted = useRef(false);
@@ -55,8 +58,8 @@ export default function WritingPage() {
   };
 
   const promptsForLevel = useMemo(
-    () => WRITING_PROMPTS.filter(p => p.level === level),
-    [level],
+    () => allPrompts.filter(p => p.level === level),
+    [allPrompts, level],
   );
 
   const pickRandom = useCallback(() => {
@@ -68,7 +71,7 @@ export default function WritingPage() {
 
   const handleLevelChange = (newLevel: CEFRLevel) => {
     setLevel(newLevel);
-    const prompts = WRITING_PROMPTS.filter(p => p.level === newLevel);
+    const prompts = allPrompts.filter(p => p.level === newLevel);
     setPrompt(prompts[0] ?? null);
     setShowTranslation(false);
   };

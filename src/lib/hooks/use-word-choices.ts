@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import Fuse from 'fuse.js';
-import { WORD_CHOICE_GROUPS } from '@/lib/word-choices';
+import { loadWordChoiceGroups } from '@/lib/word-choices';
 import { usePreferredLevel } from '@/lib/hooks/use-preferred-level';
 import type { CEFRLevel } from '@/lib/resources';
 import type { WordChoiceCategory, WordChoiceGroup } from '@/lib/word-choices';
@@ -13,17 +13,20 @@ export function useWordChoices() {
   const [levelFilter, setLevelFilter] = useState<CEFRLevel | 'all'>(preferredLevel);
   const [categoryFilter, setCategoryFilter] = useState<WordChoiceCategory | 'all'>('all');
   const [expandedGroupId, setExpandedGroupId] = useState<string | null>(null);
+  const [allGroups, setAllGroups] = useState<WordChoiceGroup[]>([]);
+
+  useEffect(() => { loadWordChoiceGroups().then(setAllGroups); }, []);
 
   useEffect(() => {
     setExpandedGroupId(null);
   }, [levelFilter, categoryFilter]);
 
   const filteredGroups: WordChoiceGroup[] = useMemo(() => {
-    let base: WordChoiceGroup[] = WORD_CHOICE_GROUPS;
+    let base: WordChoiceGroup[] = allGroups;
     if (levelFilter !== 'all') base = base.filter(g => g.level === levelFilter);
     if (categoryFilter !== 'all') base = base.filter(g => g.category === categoryFilter);
     return base;
-  }, [levelFilter, categoryFilter]);
+  }, [allGroups, levelFilter, categoryFilter]);
 
   const fuse = useMemo(
     () => new Fuse(filteredGroups, {

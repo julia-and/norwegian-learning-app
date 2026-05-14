@@ -4,10 +4,10 @@ import { useState, useEffect, useMemo } from 'react';
 import Fuse from 'fuse.js';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from '@/lib/db';
-import { GRAMMAR_RULES } from '@/lib/grammar-rules';
+import { loadGrammarRules } from '@/lib/grammar-rules';
 import { usePreferredLevel } from '@/lib/hooks/use-preferred-level';
 import type { CEFRLevel } from '@/lib/resources';
-import type { GrammarCategory } from '@/lib/grammar-rules';
+import type { GrammarCategory, GrammarRule } from '@/lib/grammar-rules';
 
 const BOOKMARKS_KEY = 'norsk-grammar-bookmarks';
 
@@ -46,6 +46,8 @@ export function useGrammar(): UseGrammarReturn {
   const [categoryFilter, setCategoryFilter] = useState<GrammarCategory | 'all'>('all');
   const [expandedRuleId, setExpandedRuleId] = useState<string | null>(null);
   const [bookmarks, setBookmarks] = useState<Set<string>>(readBookmarks);
+  const [allRules, setAllRules] = useState<GrammarRule[]>([]);
+  useEffect(() => { loadGrammarRules().then(setAllRules); }, []);
 
   const progressRows = useLiveQuery(() => db.grammarProgress.toArray()) ?? [];
   const progressMap = useMemo(
@@ -63,11 +65,11 @@ export function useGrammar(): UseGrammarReturn {
   }, [levelFilter, categoryFilter]);
 
   const filteredRules = useMemo(() => {
-    let base = GRAMMAR_RULES;
+    let base = allRules;
     if (levelFilter !== 'all') base = base.filter(r => r.level === levelFilter);
     if (categoryFilter !== 'all') base = base.filter(r => r.category === categoryFilter);
     return base;
-  }, [levelFilter, categoryFilter]);
+  }, [allRules, levelFilter, categoryFilter]);
 
   // Fuse is expensive to instantiate; only rebuild when the filtered set changes.
   const fuse = useMemo(

@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { CheckCircle2, XCircle, RefreshCw, BookOpen, PenLine, ChevronDown, ChevronUp } from 'lucide-react';
 import { Input } from '@/components/ui/Input';
 import { usePreferredLevel } from '@/lib/hooks/use-preferred-level';
-import { PREP_GUIDE, PREP_EXERCISES, sampleExercises } from '@/lib/prepositions';
+import { loadPrepGuide, loadPrepExercises, sampleExercises } from '@/lib/prepositions';
 import type { PrepGuideEntry, PrepExercise } from '@/lib/prepositions';
 import type { CEFRLevel } from '@/lib/resources';
 import { db } from '@/lib/db';
@@ -106,8 +106,13 @@ export default function PrepositionsPage() {
   const [results, setResults] = useState<ResultItem[]>([]);
   const inputRefs = useRef<Record<string, HTMLInputElement | null>>({});
 
+  const [guide, setGuide] = useState<PrepGuideEntry[]>([]);
+  const [allExercises, setAllExercises] = useState<PrepExercise[]>([]);
+  useEffect(() => { loadPrepGuide().then(setGuide); }, []);
+  useEffect(() => { loadPrepExercises().then(setAllExercises); }, []);
+
   // filtered guide entries
-  const guideEntries = PREP_GUIDE.filter(e => {
+  const guideEntries = guide.filter(e => {
     const matchLevel = guideLevel === 'all' || e.level === guideLevel;
     const q = guideSearch.toLowerCase();
     const matchSearch = !q || e.word.includes(q) || e.explanationEnglish.toLowerCase().includes(q);
@@ -115,7 +120,8 @@ export default function PrepositionsPage() {
   });
 
   function startQuiz() {
-    const sampled = sampleExercises(preferredLevel, 10);
+    if (allExercises.length === 0) return; // data still loading
+    const sampled = sampleExercises(allExercises, preferredLevel, 10);
     setExercises(sampled);
     setAnswers({});
     setResults([]);
@@ -283,7 +289,7 @@ export default function PrepositionsPage() {
       </div>
 
       <div className={styles.exerciseCount}>
-        <span>{PREP_EXERCISES.length} øvingssetninger tilgjengelig</span>
+        <span>{allExercises.length} øvingssetninger tilgjengelig</span>
         <button className={styles.btnPrimary} onClick={startQuiz}>
           <PenLine size={16} /> Start øving ({preferredLevel})
         </button>
