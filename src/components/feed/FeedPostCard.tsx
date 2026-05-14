@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { memo, useState, useEffect, useRef, useCallback } from 'react';
 import { ChevronDown, ChevronUp, ArrowBigUp } from 'lucide-react';
 import type { FeedPost } from '@/lib/db';
 import { TappableText } from './TappableText';
@@ -19,7 +19,7 @@ interface FeedPostCardProps {
   onMarkRead: (id: string) => void;
 }
 
-export function FeedPostCard({ post, onUpvote, onMarkRead }: FeedPostCardProps) {
+function FeedPostCardInner({ post, onUpvote, onMarkRead }: FeedPostCardProps) {
   const [commentsOpen, setCommentsOpen] = useState(false);
   const [tooltip, setTooltip] = useState<TooltipState | null>(null);
   const cardRef = useRef<HTMLDivElement>(null);
@@ -123,3 +123,5 @@ export function FeedPostCard({ post, onUpvote, onMarkRead }: FeedPostCardProps) 
     </article>
   );
 }
+
+export const FeedPostCard = memo(FeedPostCardInner);

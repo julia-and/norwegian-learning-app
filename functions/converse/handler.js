@@ -1,16 +1,10 @@
 import { pathToFileURL } from "url";
+import { authorize, jsonResponse, serverError } from "./_shared/cors-and-auth.js";
+import { parseClaudeJson } from "./_shared/parse-claude-json.js";
+import { callAnthropic, extractText } from "./_shared/anthropic.js";
+import { SCENARIOS } from "./_shared/scenarios.js";
 
-const ANTHROPIC_API_URL = "https://api.anthropic.com/v1/messages";
-
-function corsHeaders(origin) {
-  const allowed = process.env.ALLOWED_ORIGIN || "*";
-  return {
-    "Access-Control-Allow-Origin": allowed === "*" ? "*" : origin,
-    "Access-Control-Allow-Methods": "POST, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type",
-    "Access-Control-Max-Age": "86400",
-  };
-}
+const VALID_LEVELS = ["A1", "A2", "B1", "B2", "C1"];
 
 function buildSystemPrompt(scenario, level, turnCount, maxTurns) {
   const maxSentences = level === "A1" || level === "A2" ? 2 : 3;
@@ -41,135 +35,68 @@ Respond with ONLY valid JSON in this exact format:
 }`;
 }
 
-export const handle = async (event, context, callback) => {
-  const origin = event.headers?.origin || "";
-  const headers = corsHeaders(origin);
-
-  if (event.httpMethod === "OPTIONS") {
-    return { statusCode: 204, headers, body: "" };
-  }
-
-  if (event.httpMethod !== "POST") {
-    return {
-      statusCode: 405,
-      headers: { ...headers, "Content-Type": "application/json" },
-      body: JSON.stringify({ error: "Method not allowed" }),
-    };
-  }
+export const handle = async event => {
+  const auth = authorize(event);
+  if (!auth.ok) return auth.response;
+  const { headers, body } = auth;
 
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
-    return {
-      statusCode: 500,
-      headers: { ...headers, "Content-Type": "application/json" },
-      body: JSON.stringify({ error: "Server misconfigured: missing API key" }),
-    };
+    return jsonResponse(500, headers, { error: "Server misconfigured: missing API key" });
   }
 
-  let messages, scenario, level, turnCount, maxTurns;
-  try {
-    const body =
-      typeof event.body === "string" ? JSON.parse(event.body) : event.body;
-    messages = body.messages;
-    scenario = body.scenario;
-    level = body.level || "A2";
-    turnCount = typeof body.turnCount === "number" ? body.turnCount : 0;
-    maxTurns = typeof body.maxTurns === "number" ? body.maxTurns : 4;
-  } catch {
-    return {
-      statusCode: 400,
-      headers: { ...headers, "Content-Type": "application/json" },
-      body: JSON.stringify({ error: "Invalid JSON body" }),
-    };
-  }
+  const messages = body.messages;
+  const scenarioId =
+    body.scenarioId || (body.scenario && body.scenario.id) || null;
+  let level = body.level || "A2";
+  const turnCount = typeof body.turnCount === "number" ? body.turnCount : 0;
+  const maxTurnsOverride = typeof body.maxTurns === "number" ? body.maxTurns : null;
 
   if (!messages || !Array.isArray(messages) || messages.length === 0) {
-    return {
-      statusCode: 400,
-      headers: { ...headers, "Content-Type": "application/json" },
-      body: JSON.stringify({ error: 'Missing or empty "messages" array' }),
-    };
+    return jsonResponse(400, headers, { error: 'Missing or empty "messages" array' });
   }
-
-  if (!scenario || !scenario.role || !scenario.title) {
-    return {
-      statusCode: 400,
-      headers: { ...headers, "Content-Type": "application/json" },
-      body: JSON.stringify({ error: "Missing required scenario fields" }),
-    };
+  if (!scenarioId || typeof scenarioId !== "string") {
+    return jsonResponse(400, headers, { error: 'Missing "scenarioId"' });
   }
-
-  const validLevels = ["A1", "A2", "B1", "B2", "C1"];
-  if (!validLevels.includes(level)) level = "A2";
+  const scenario = SCENARIOS[scenarioId];
+  if (!scenario) {
+    return jsonResponse(400, headers, { error: `Unknown scenarioId: ${scenarioId}` });
+  }
+  if (!VALID_LEVELS.includes(level)) level = "A2";
+  const maxTurns = maxTurnsOverride || scenario.maxTurns;
 
   try {
-    const response = await fetch(ANTHROPIC_API_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": apiKey,
-        "anthropic-version": "2023-06-01",
-      },
-      body: JSON.stringify({
-        model: "claude-haiku-4-5-20251001",
-        max_tokens: 512,
-        system: buildSystemPrompt(scenario, level, turnCount, maxTurns),
-        messages,
-      }),
+    const data = await callAnthropic({
+      apiKey,
+      model: "claude-haiku-4-5-20251001",
+      maxTokens: 512,
+      system: buildSystemPrompt(scenario, level, turnCount, maxTurns),
+      messages,
     });
 
-    if (!response.ok) {
-      return {
-        statusCode: 502,
-        headers: { ...headers, "Content-Type": "application/json" },
-        body: JSON.stringify({
-          error: `Upstream API error (${response.status})`,
-        }),
-      };
-    }
-
-    const data = await response.json();
-    const content = data.content?.[0]?.text;
+    const content = extractText(data);
     if (!content) {
-      return {
-        statusCode: 502,
-        headers: { ...headers, "Content-Type": "application/json" },
-        body: JSON.stringify({ error: "No response from upstream API" }),
-      };
+      return jsonResponse(502, headers, { error: "No response from upstream API" });
     }
 
-    const jsonMatch = content.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) {
-      return {
-        statusCode: 502,
-        headers: { ...headers, "Content-Type": "application/json" },
-        body: JSON.stringify({ error: "Could not parse conversation response" }),
-      };
-    }
+    const result = parseClaudeJson(content, {
+      required: ["reply"],
+      shape: { reply: "string", isComplete: "boolean", hint: "string" },
+    });
+    if (turnCount >= maxTurns) result.isComplete = true;
 
-    const result = JSON.parse(jsonMatch[0]);
-    // Enforce isComplete when we've reached max turns
-    if (turnCount >= maxTurns) {
-      result.isComplete = true;
-    }
-
-    return {
-      statusCode: 200,
-      headers: { ...headers, "Content-Type": "application/json" },
-      body: JSON.stringify(result),
-    };
+    return jsonResponse(200, headers, result);
   } catch (err) {
-    return {
-      statusCode: 500,
-      headers: { ...headers, "Content-Type": "application/json" },
-      body: JSON.stringify({ error: "Internal server error" }),
-    };
+    if (err.status) {
+      return jsonResponse(502, headers, { error: err.message });
+    }
+    return serverError(headers, err);
   }
 };
 
 // Local testing
 if (import.meta.url === pathToFileURL(process.argv[1]).href) {
-  import("@scaleway/serverless-functions").then((scw) => {
+  import("@scaleway/serverless-functions").then(scw => {
     scw.serveHandler(handle, 8081);
   });
 }

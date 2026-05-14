@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db, type FeedPost } from '@/lib/db';
 import { generateFeedPosts } from '@/lib/feed';
@@ -12,19 +12,21 @@ const STALE_DAYS = 7;
 export function useFeed(level: string) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const inFlight = useRef(false);
 
   const posts = useLiveQuery(
     () =>
       db.feedPosts
         .where('level')
         .equals(level)
-        .toArray()
-        .then(arr => arr.sort((a, b) => b.generatedAt.getTime() - a.generatedAt.getTime())),
+        .reverse()
+        .sortBy('generatedAt'),
     [level],
   ) ?? [];
 
   const generateMore = useCallback(async () => {
-    if (loading) return;
+    if (inFlight.current) return;
+    inFlight.current = true;
     setLoading(true);
     setError(null);
     try {
@@ -41,26 +43,32 @@ export function useFeed(level: string) {
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Failed to generate posts');
     } finally {
+      inFlight.current = false;
       setLoading(false);
     }
-  }, [level, loading]);
-
-  // On mount / level change: prune stale posts, then generate if below minimum
-  useEffect(() => {
-    const cutoff = new Date(Date.now() - STALE_DAYS * 24 * 60 * 60 * 1000);
-    db.feedPosts
-      .where('level')
-      .equals(level)
-      .filter(p => p.generatedAt < cutoff)
-      .delete()
-      .then(() => db.feedPosts.where('level').equals(level).count())
-      .then(count => {
-        if (count < MIN_POSTS) {
-          generateMore();
-        }
-      });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [level]);
+
+  // On mount / level change: prune stale posts, then generate if below minimum.
+  // `ignored` flag prevents a late-arriving "do generate" decision from firing
+  // after the level has been changed underneath us.
+  useEffect(() => {
+    let ignored = false;
+    const cutoff = new Date(Date.now() - STALE_DAYS * 24 * 60 * 60 * 1000);
+    (async () => {
+      await db.feedPosts
+        .where('level')
+        .equals(level)
+        .filter(p => p.generatedAt < cutoff)
+        .delete();
+      const count = await db.feedPosts.where('level').equals(level).count();
+      if (!ignored && count < MIN_POSTS) {
+        generateMore();
+      }
+    })();
+    return () => {
+      ignored = true;
+    };
+  }, [level, generateMore]);
 
   const upvotePost = useCallback(async (id: string) => {
     const post = await db.feedPosts.get(id);

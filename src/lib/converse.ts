@@ -1,4 +1,5 @@
 import type { ConversationScenario } from '@/lib/scenarios';
+import { proxyFetch } from '@/lib/api-client';
 
 export interface ChatMessage {
   role: 'user' | 'assistant';
@@ -19,34 +20,22 @@ export async function sendConversationTurn(
   level: string,
   turnCount: number,
 ): Promise<ConverseTurnResult> {
-  if (!CONVERSE_URL) {
-    throw new Error(
-      'Conversation API is not configured. The NEXT_PUBLIC_CONVERSATION_API_URL environment variable is missing.',
-    );
-  }
-
-  const response = await fetch(CONVERSE_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
+  // Send only the scenario id; the server looks up role/title/maxTurns from
+  // its own allowlist. This is the prompt-injection mitigation — the server
+  // no longer trusts client-supplied role/title strings.
+  return proxyFetch<ConverseTurnResult>(
+    CONVERSE_URL,
+    {
       messages,
-      scenario: {
-        id: scenario.id,
-        title: scenario.title,
-        role: scenario.role,
-        situation: scenario.situation,
-        openingLine: scenario.openingLine,
-      },
+      scenarioId: scenario.id,
       level,
       turnCount,
       maxTurns: scenario.maxTurns,
-    }),
-  });
-
-  if (!response.ok) {
-    const body = await response.json().catch(() => ({ error: 'Unknown error' }));
-    throw new Error(body.error || `API error (${response.status})`);
-  }
-
-  return (await response.json()) as ConverseTurnResult;
+    },
+    {
+      required: ['reply'],
+      shape: { reply: 'string', isComplete: 'boolean', hint: 'string' },
+    },
+    'Conversation API',
+  );
 }

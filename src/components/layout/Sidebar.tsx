@@ -45,6 +45,7 @@ export function Sidebar({ streak = 0 }: SidebarProps) {
               key={href}
               href={href}
               prefetch={false}
+              aria-current={isActive ? 'page' : undefined}
               className={`${styles.navLink} ${isActive ? styles.navLinkActive : ''}`}
             >
               <Icon size={18} />

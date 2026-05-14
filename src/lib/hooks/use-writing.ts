@@ -1,10 +1,9 @@
 'use client';
 
 import { useLiveQuery } from 'dexie-react-hooks';
-import { subDays, format } from 'date-fns';
 import { db, type WritingSubmission, type SelfCorrectionAttempt } from '@/lib/db';
 import type { CorrectionResult } from '@/lib/claude';
-import { todayISO } from '@/lib/utils';
+import { todayISO, dateRange } from '@/lib/utils';
 
 export function useWritingHistory() {
   const submissions = useLiveQuery(
@@ -64,15 +63,12 @@ export function useFluencyOverTime(days: number = 30) {
     () => db.writingSubmissions.toArray()
   ) ?? [];
 
-  const result: { date: string; avgFluency: number; count: number }[] = [];
-  for (let i = days - 1; i >= 0; i--) {
-    const date = format(subDays(new Date(), i), 'yyyy-MM-dd');
+  return dateRange(days).map(date => {
     const daySubmissions = submissions.filter(s => s.date === date);
     const count = daySubmissions.length;
     const avgFluency = count > 0
       ? daySubmissions.reduce((sum, s) => sum + s.fluencyRating, 0) / count
       : 0;
-    result.push({ date, avgFluency, count });
-  }
-  return result;
+    return { date, avgFluency, count };
+  });
 }

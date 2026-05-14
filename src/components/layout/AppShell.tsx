@@ -4,7 +4,7 @@ import { ReactNode, useEffect, useState } from 'react';
 import { Sidebar } from './Sidebar';
 import { MobileNav } from './MobileNav';
 import { ThemeProvider } from './ThemeProvider';
-import { db, seedDefaults } from '@/lib/db';
+import { db, seedDefaults, configureCloud, DB_NAME } from '@/lib/db';
 import { useStats } from '@/lib/hooks/use-stats';
 import styles from './app-shell.module.css';
 
@@ -13,6 +13,7 @@ function AppShellInner({ children }: { children: ReactNode }) {
   const [dbError, setDbError] = useState(false);
 
   useEffect(() => {
+    configureCloud();
     db.open()
       .then(() => seedDefaults())
       .catch(err => {
@@ -28,7 +29,7 @@ function AppShellInner({ children }: { children: ReactNode }) {
         <div style={{ fontSize: 32 }}>⚠️</div>
         <h2 style={{ margin: 0 }}>Database needs to be reset</h2>
         <p style={{ margin: 0, color: '#6b7280', maxWidth: 400 }}>
-          A database upgrade conflict was detected. Open DevTools → Application → IndexedDB → delete the <strong>norsk-tracker</strong> database, then reload the page. Your data will resync from the cloud.
+          A database upgrade conflict was detected. Open DevTools → Application → IndexedDB → delete the <strong>{DB_NAME}</strong> database, then reload the page. Your data will resync from the cloud.
         </p>
         <button
           onClick={() => window.location.reload()}

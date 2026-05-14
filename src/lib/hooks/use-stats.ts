@@ -3,7 +3,7 @@
 import { useLiveQuery } from 'dexie-react-hooks';
 import { subDays, format, parseISO } from 'date-fns';
 import { db } from '@/lib/db';
-import { todayISO } from '@/lib/utils';
+import { todayISO, dateRange } from '@/lib/utils';
 
 export function useStats() {
   const allCheckoffs = useLiveQuery(() => db.dailyCheckoffs.toArray()) ?? [];
@@ -86,18 +86,16 @@ export function useCompletionByDay(days: number = 30) {
   const checkoffs = useLiveQuery(() => db.dailyCheckoffs.toArray()) ?? [];
   const taskCount = useLiveQuery(() => db.practiceTasks.where('isActive').equals(1).count()) ?? 0;
 
-  const result: { date: string; rate: number; count: number }[] = [];
-  for (let i = days - 1; i >= 0; i--) {
-    const date = format(subDays(new Date(), i), 'yyyy-MM-dd');
+  const data = dateRange(days).map(date => {
     const dayCheckoffs = checkoffs.filter(c => c.date === date);
     const uniqueTasks = new Set(dayCheckoffs.map(c => c.taskId)).size;
-    result.push({
+    return {
       date,
       rate: taskCount > 0 ? uniqueTasks / taskCount : 0,
       count: uniqueTasks,
-    });
-  }
-  return { data: result, taskCount };
+    };
+  });
+  return { data, taskCount };
 }
 
 export function useTimeByCategory(days: number = 30) {
@@ -108,8 +106,7 @@ export function useTimeByCategory(days: number = 30) {
   const taskCategoryMap = new Map(tasks.map(t => [t.id, t.category]));
 
   const result: Record<string, { date: string; reading: number; writing: number; listening: number; speaking: number; vocabulary: number }> = {};
-  for (let i = days - 1; i >= 0; i--) {
-    const date = format(subDays(new Date(), i), 'yyyy-MM-dd');
+  for (const date of dateRange(days)) {
     result[date] = { date, reading: 0, writing: 0, listening: 0, speaking: 0, vocabulary: 0 };
   }
 

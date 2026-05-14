@@ -18,19 +18,15 @@ export function useWordChoices() {
     setExpandedGroupId(null);
   }, [levelFilter, categoryFilter]);
 
-  const groups: WordChoiceGroup[] = useMemo(() => {
+  const filteredGroups: WordChoiceGroup[] = useMemo(() => {
     let base: WordChoiceGroup[] = WORD_CHOICE_GROUPS;
+    if (levelFilter !== 'all') base = base.filter(g => g.level === levelFilter);
+    if (categoryFilter !== 'all') base = base.filter(g => g.category === categoryFilter);
+    return base;
+  }, [levelFilter, categoryFilter]);
 
-    if (levelFilter !== 'all') {
-      base = base.filter(g => g.level === levelFilter);
-    }
-    if (categoryFilter !== 'all') {
-      base = base.filter(g => g.category === categoryFilter);
-    }
-
-    if (!search.trim()) return base;
-
-    const fuse = new Fuse(base, {
+  const fuse = useMemo(
+    () => new Fuse(filteredGroups, {
       keys: [
         { name: 'title', weight: 0.3 },
         { name: 'tags', weight: 0.25 },
@@ -41,10 +37,14 @@ export function useWordChoices() {
       ],
       threshold: 0.35,
       ignoreLocation: true,
-    });
+    }),
+    [filteredGroups],
+  );
 
+  const groups: WordChoiceGroup[] = useMemo(() => {
+    if (!search.trim()) return filteredGroups;
     return fuse.search(search).map(r => r.item);
-  }, [search, levelFilter, categoryFilter]);
+  }, [search, fuse, filteredGroups]);
 
   return {
     groups,

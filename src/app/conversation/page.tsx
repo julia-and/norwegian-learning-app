@@ -55,38 +55,6 @@ export default function ConversationPage() {
     setTimeout(() => textareaRef.current?.focus(), 100);
   }, [timer]);
 
-  const sendMessage = useCallback(async () => {
-    if (!inputText.trim() || !scenario || phase !== 'active') return;
-
-    const userMessage: ChatMessage = { role: 'user', content: inputText.trim() };
-    const newMessages = [...messages, userMessage];
-    setMessages(newMessages);
-    setInputText('');
-    setShowHint(false);
-    setPhase('awaiting-ai');
-
-    const newTurnCount = turnCount + 1;
-    setTurnCount(newTurnCount);
-
-    try {
-      const result = await sendConversationTurn(newMessages, scenario, level, newTurnCount);
-      const updatedMessages = [...newMessages, { role: 'assistant' as const, content: result.reply }];
-      setMessages(updatedMessages);
-
-      if (result.isComplete) {
-        setHint(null);
-        await handleReview(updatedMessages, newTurnCount);
-      } else {
-        setHint(result.hint || null);
-        setPhase('active');
-        setTimeout(() => textareaRef.current?.focus(), 100);
-      }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Noe gikk galt.');
-      setPhase('active');
-    }
-  }, [inputText, messages, scenario, phase, turnCount, level]);
-
   const handleReview = useCallback(async (allMessages: ChatMessage[], finalTurnCount: number) => {
     setPhase('reviewing');
     const timerSession = await timer.stop();
@@ -125,10 +93,49 @@ export default function ConversationPage() {
     }
   }, [timer, scenario, level, saveSession]);
 
+  // sendMessage needs to call handleReview, but handleReview's identity
+  // changes whenever its deps change (notably `timer`, which is unstable per
+  // useTimer's implementation). Keep a ref so sendMessage always calls the
+  // freshest handleReview without needing it in its own deps.
+  const handleReviewRef = useRef(handleReview);
+  handleReviewRef.current = handleReview;
+
+  const sendMessage = useCallback(async () => {
+    if (!inputText.trim() || !scenario || phase !== 'active') return;
+
+    const userMessage: ChatMessage = { role: 'user', content: inputText.trim() };
+    const newMessages = [...messages, userMessage];
+    setMessages(newMessages);
+    setInputText('');
+    setShowHint(false);
+    setPhase('awaiting-ai');
+
+    const newTurnCount = turnCount + 1;
+    setTurnCount(newTurnCount);
+
+    try {
+      const result = await sendConversationTurn(newMessages, scenario, level, newTurnCount);
+      const updatedMessages = [...newMessages, { role: 'assistant' as const, content: result.reply }];
+      setMessages(updatedMessages);
+
+      if (result.isComplete) {
+        setHint(null);
+        await handleReviewRef.current(updatedMessages, newTurnCount);
+      } else {
+        setHint(result.hint || null);
+        setPhase('active');
+        setTimeout(() => textareaRef.current?.focus(), 100);
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Noe gikk galt.');
+      setPhase('active');
+    }
+  }, [inputText, messages, scenario, phase, turnCount, level]);
+
   const handleEndEarly = useCallback(async () => {
     if (!scenario) return;
-    await handleReview(messages, turnCount);
-  }, [handleReview, messages, turnCount, scenario]);
+    await handleReviewRef.current(messages, turnCount);
+  }, [messages, turnCount, scenario]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
@@ -326,8 +333,6 @@ export default function ConversationPage() {
 
           {correction && <WritingResults result={correction} />}
 
-          {error && <div className={styles.error}>{error}</div>}
-
           <div className={styles.doneActions}>
             <Button onClick={resetToIdle}>
               <RotateCcw size={14} /> Ny samtale
@@ -339,9 +344,7 @@ export default function ConversationPage() {
         </>
       )}
 
-      {error && (phase === 'active' || phase === 'awaiting-ai') && (
-        <div className={styles.error}>{error}</div>
-      )}
+      {error && <div className={styles.error}>{error}</div>}
     </div>
   );
 }

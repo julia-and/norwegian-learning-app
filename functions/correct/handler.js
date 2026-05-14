@@ -1,17 +1,10 @@
 import { pathToFileURL } from "url";
+import { authorize, jsonResponse, serverError } from "./_shared/cors-and-auth.js";
+import { parseClaudeJson } from "./_shared/parse-claude-json.js";
+import { callAnthropic, extractText } from "./_shared/anthropic.js";
 
-const ANTHROPIC_API_URL = "https://api.anthropic.com/v1/messages";
 const MAX_TEXT_LENGTH = 5000;
-
-function corsHeaders(origin) {
-  const allowed = process.env.ALLOWED_ORIGIN || "*";
-  return {
-    "Access-Control-Allow-Origin": allowed === "*" ? "*" : origin,
-    "Access-Control-Allow-Methods": "POST, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type",
-    "Access-Control-Max-Age": "86400",
-  };
-}
+const VALID_LEVELS = ["A1", "A2", "B1", "B2", "C1"];
 
 function buildSystemPrompt(level) {
   return `You are a Norwegian (Bokmål) language tutor. The student is at CEFR ${level} level.
@@ -56,133 +49,62 @@ Respond ONLY with valid JSON in this exact format:
 }`;
 }
 
-export const handle = async (event, context, callback) => {
-  const origin = event.headers?.origin || "";
-  const headers = corsHeaders(origin);
-
-  // Handle CORS preflight
-  if (event.httpMethod === "OPTIONS") {
-    return { statusCode: 204, headers, body: "" };
-  }
-
-  if (event.httpMethod !== "POST") {
-    return {
-      statusCode: 405,
-      headers: { ...headers, "Content-Type": "application/json" },
-      body: JSON.stringify({ error: "Method not allowed" }),
-    };
-  }
+export const handle = async event => {
+  const auth = authorize(event);
+  if (!auth.ok) return auth.response;
+  const { headers, body } = auth;
 
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
-    return {
-      statusCode: 500,
-      headers: { ...headers, "Content-Type": "application/json" },
-      body: JSON.stringify({ error: "Server misconfigured: missing API key" }),
-    };
+    return jsonResponse(500, headers, { error: "Server misconfigured: missing API key" });
   }
 
-  let text, level;
-  try {
-    const body =
-      typeof event.body === "string" ? JSON.parse(event.body) : event.body;
-    text = body.text;
-    level = body.level;
-  } catch {
-    return {
-      statusCode: 400,
-      headers: { ...headers, "Content-Type": "application/json" },
-      body: JSON.stringify({ error: "Invalid JSON body" }),
-    };
-  }
+  const text = body.text;
+  let level = body.level;
 
   if (!text || typeof text !== "string" || !text.trim()) {
-    return {
-      statusCode: 400,
-      headers: { ...headers, "Content-Type": "application/json" },
-      body: JSON.stringify({ error: 'Missing or empty "text" field' }),
-    };
+    return jsonResponse(400, headers, { error: 'Missing or empty "text" field' });
   }
-
   if (text.length > MAX_TEXT_LENGTH) {
-    return {
-      statusCode: 400,
-      headers: { ...headers, "Content-Type": "application/json" },
-      body: JSON.stringify({
-        error: `Text exceeds maximum length of ${MAX_TEXT_LENGTH} characters`,
-      }),
-    };
+    return jsonResponse(400, headers, {
+      error: `Text exceeds maximum length of ${MAX_TEXT_LENGTH} characters`,
+    });
   }
-
-  const validLevels = ["A1", "A2", "B1", "B2", "C1"];
-  if (!level || !validLevels.includes(level)) {
-    level = "A2";
-  }
+  if (!level || !VALID_LEVELS.includes(level)) level = "A2";
 
   try {
-    const response = await fetch(ANTHROPIC_API_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": apiKey,
-        "anthropic-version": "2023-06-01",
-      },
-      body: JSON.stringify({
-        model: "claude-haiku-4-5-20251001",
-        max_tokens: 2048,
-        system: buildSystemPrompt(level),
-        messages: [
-          {
-            role: "user",
-            content: `Please correct this Norwegian text:\n\n${text}`,
-          },
-        ],
-      }),
+    const data = await callAnthropic({
+      apiKey,
+      model: "claude-haiku-4-5-20251001",
+      maxTokens: 2048,
+      system: buildSystemPrompt(level),
+      messages: [
+        { role: "user", content: `Please correct this Norwegian text:\n\n${text}` },
+      ],
     });
 
-    if (!response.ok) {
-      const errorBody = await response.text();
-      return {
-        statusCode: 502,
-        headers: { ...headers, "Content-Type": "application/json" },
-        body: JSON.stringify({
-          error: `Upstream API error (${response.status})`,
-        }),
-      };
-    }
-
-    const data = await response.json();
-    const content = data.content?.[0]?.text;
+    const content = extractText(data);
     if (!content) {
-      return {
-        statusCode: 502,
-        headers: { ...headers, "Content-Type": "application/json" },
-        body: JSON.stringify({ error: "No response from upstream API" }),
-      };
+      return jsonResponse(502, headers, { error: "No response from upstream API" });
     }
 
-    const jsonMatch = content.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) {
-      return {
-        statusCode: 502,
-        headers: { ...headers, "Content-Type": "application/json" },
-        body: JSON.stringify({ error: "Could not parse correction response" }),
-      };
-    }
+    const result = parseClaudeJson(content, {
+      required: ["corrections", "correctedText", "fluencyRating"],
+      shape: {
+        corrections: "array",
+        correctedText: "string",
+        fluencyRating: "number",
+        vocabularySuggestions: "array",
+        notes: "array",
+      },
+    });
 
-    const result = JSON.parse(jsonMatch[0]);
-
-    return {
-      statusCode: 200,
-      headers: { ...headers, "Content-Type": "application/json" },
-      body: JSON.stringify(result),
-    };
+    return jsonResponse(200, headers, result);
   } catch (err) {
-    return {
-      statusCode: 500,
-      headers: { ...headers, "Content-Type": "application/json" },
-      body: JSON.stringify({ error: "Internal server error" }),
-    };
+    if (err.status) {
+      return jsonResponse(502, headers, { error: err.message });
+    }
+    return serverError(headers, err);
   }
 };
 

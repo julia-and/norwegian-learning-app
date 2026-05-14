@@ -31,6 +31,7 @@ export function MobileNav() {
               key={href}
               href={href}
               prefetch={false}
+              aria-current={isActive ? 'page' : undefined}
               className={`${styles.link} ${isActive ? styles.active : ''}`}
             >
               <Icon size={20} />

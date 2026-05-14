@@ -62,20 +62,16 @@ export function useGrammar(): UseGrammarReturn {
     setExpandedRuleId(null);
   }, [levelFilter, categoryFilter]);
 
-  const rules = useMemo(() => {
+  const filteredRules = useMemo(() => {
     let base = GRAMMAR_RULES;
+    if (levelFilter !== 'all') base = base.filter(r => r.level === levelFilter);
+    if (categoryFilter !== 'all') base = base.filter(r => r.category === categoryFilter);
+    return base;
+  }, [levelFilter, categoryFilter]);
 
-    if (levelFilter !== 'all') {
-      base = base.filter(r => r.level === levelFilter);
-    }
-    if (categoryFilter !== 'all') {
-      base = base.filter(r => r.category === categoryFilter);
-    }
-
-    if (!search.trim()) return base;
-
-    // Run Fuse on the filtered subset
-    const subset = new Fuse(base, {
+  // Fuse is expensive to instantiate; only rebuild when the filtered set changes.
+  const fuse = useMemo(
+    () => new Fuse(filteredRules, {
       keys: [
         { name: 'title', weight: 0.35 },
         { name: 'tags', weight: 0.25 },
@@ -85,10 +81,14 @@ export function useGrammar(): UseGrammarReturn {
       ],
       threshold: 0.35,
       ignoreLocation: true,
-    });
+    }),
+    [filteredRules],
+  );
 
-    return subset.search(search).map(r => r.item);
-  }, [search, levelFilter, categoryFilter]);
+  const rules = useMemo(() => {
+    if (!search.trim()) return filteredRules;
+    return fuse.search(search).map(r => r.item);
+  }, [search, fuse, filteredRules]);
 
   const setMastery = async (ruleId: string, status: 'learning' | 'known' | null) => {
     const existing = await db.grammarProgress.get(ruleId);
@@ -112,19 +112,20 @@ export function useGrammar(): UseGrammarReturn {
       ruleId,
       ...existing,
       userNotes,
-      updatedAt: existing?.updatedAt ?? new Date(),
+      updatedAt: new Date(),
     });
   };
 
   const toggleBookmark = (ruleId: string) => {
     setBookmarks(prev => {
       const next = new Set(prev);
-      if (next.has(ruleId)) {
-        next.delete(ruleId);
-      } else {
-        next.add(ruleId);
+      if (next.has(ruleId)) next.delete(ruleId);
+      else next.add(ruleId);
+      try {
+        localStorage.setItem(BOOKMARKS_KEY, JSON.stringify([...next]));
+      } catch {
+        // quota exceeded; ignore — in-memory state still updates
       }
-      localStorage.setItem(BOOKMARKS_KEY, JSON.stringify([...next]));
       return next;
     });
   };

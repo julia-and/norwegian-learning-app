@@ -1,3 +1,15 @@
+/**
+ * IndexedDB schema for Norsk Tracker.
+ *
+ * Database name was changed from `norsk-tracker` to `norsk-tracker-v2` on
+ * 2026-05-13 after a chain of migration mishaps on the original DB:
+ *   ce4c8d9 / 7bb0172 / f103712  ("potential migration fix v1/v2/v3")
+ *   v10 swapped grammarProgress's primary key (ruleId → id), which causes
+ *   IndexedDB to drop and recreate the store; v11/v12 attempted to recover.
+ * The user is the sole operator and opted into a clean reset. The old DB
+ * (norsk-tracker) is left in place untouched so a rollback is possible by
+ * reverting this commit.
+ */
 import Dexie, { type EntityTable } from 'dexie';
 import dexieCloud from 'dexie-cloud-addon';
 import type { CorrectionResult } from '@/lib/claude';
@@ -136,6 +148,24 @@ export interface FeedPost {
   readAt?: Date;
 }
 
+export const SCHEMA = {
+  practiceTasks:        'id, category, order, isActive',
+  dailyCheckoffs:       'id, taskId, date, [taskId+date]',
+  vocabEntries:         'id, norwegian, reviewStatus, category, createdAt',
+  timerSessions:        'id, category, date',
+  writingSubmissions:   'id, date, level, fluencyRating, createdAt',
+  consumedResources:    'id, consumedAt',
+  difficultyRatings:    'id, sessionId, contentType, date, ratedAt',
+  grammarProgress:      '&ruleId, status, updatedAt',
+  conversationSessions: 'id, level, scenarioId, completedAt, createdAt',
+  prepositionSessions:  'id, date, level, completedAt',
+  feedPosts:            'id, subreddit, level, generatedAt, upvotedByUser',
+} as const;
+
+export const STORES = Object.keys(SCHEMA) as (keyof typeof SCHEMA)[];
+
+export const DB_NAME = 'norsk-tracker-v2';
+
 class TrackerDB extends Dexie {
   practiceTasks!: EntityTable<PracticeTask, 'id'>;
   dailyCheckoffs!: EntityTable<DailyCheckoff, 'id'>;
@@ -150,169 +180,41 @@ class TrackerDB extends Dexie {
   feedPosts!: EntityTable<FeedPost, 'id'>;
 
   constructor() {
-    super('norsk-tracker', { addons: [dexieCloud] });
-
-    this.version(1).stores({
-      practiceTasks: 'id, category, order, isActive',
-      dailyCheckoffs: 'id, taskId, date, [taskId+date]',
-      vocabEntries: 'id, norwegian, reviewStatus, category, createdAt',
-      timerSessions: 'id, category, date',
-    });
-
-    this.version(2).stores({
-      practiceTasks: 'id, category, order, isActive',
-      dailyCheckoffs: 'id, taskId, date, [taskId+date]',
-      vocabEntries: 'id, norwegian, reviewStatus, category, createdAt',
-      timerSessions: 'id, category, date',
-      writingSubmissions: 'id, date, level, fluencyRating, createdAt',
-    });
-
-    this.version(3).stores({
-      practiceTasks: 'id, category, order, isActive',
-      dailyCheckoffs: 'id, taskId, date, [taskId+date]',
-      vocabEntries: 'id, norwegian, reviewStatus, category, createdAt',
-      timerSessions: 'id, category, date',
-      writingSubmissions: 'id, date, level, fluencyRating, createdAt',
-      consumedResources: 'id, consumedAt',
-    });
-
-    this.version(4).stores({
-      practiceTasks: 'id, category, order, isActive',
-      dailyCheckoffs: 'id, taskId, date, [taskId+date]',
-      vocabEntries: 'id, norwegian, reviewStatus, category, createdAt',
-      timerSessions: 'id, category, date',
-      writingSubmissions: 'id, date, level, fluencyRating, createdAt',
-      consumedResources: 'id, consumedAt',
-    }).upgrade(async tx => {
-      await tx.table('practiceTasks').toCollection().modify((task: PracticeTask) => {
-        if (task.activeDays === undefined) task.activeDays = 127;
-      });
-    });
-
-    this.version(5).stores({
-      practiceTasks:      'id, category, order, isActive',
-      dailyCheckoffs:     'id, taskId, date, [taskId+date]',
-      vocabEntries:       'id, norwegian, reviewStatus, category, createdAt',
-      timerSessions:      'id, category, date',
-      writingSubmissions: 'id, date, level, fluencyRating, createdAt',
-      consumedResources:  'id, consumedAt',
-      difficultyRatings:  'id, sessionId, contentType, date, ratedAt',
-    });
-
-    this.version(6).stores({
-      practiceTasks:      'id, category, order, isActive',
-      dailyCheckoffs:     'id, taskId, date, [taskId+date]',
-      vocabEntries:       'id, norwegian, reviewStatus, category, createdAt',
-      timerSessions:      'id, category, date',
-      writingSubmissions: 'id, date, level, fluencyRating, createdAt',
-      consumedResources:  'id, consumedAt',
-      difficultyRatings:  'id, sessionId, contentType, date, ratedAt',
-      grammarProgress:    '&ruleId, status, updatedAt',
-    });
-
-    this.version(7).stores({
-      practiceTasks:      'id, category, order, isActive',
-      dailyCheckoffs:     'id, taskId, date, [taskId+date]',
-      vocabEntries:       'id, norwegian, reviewStatus, category, createdAt',
-      timerSessions:      'id, category, date',
-      writingSubmissions: 'id, date, level, fluencyRating, createdAt',
-      consumedResources:  'id, consumedAt',
-      difficultyRatings:  'id, sessionId, contentType, date, ratedAt',
-      grammarProgress:    '&ruleId, status, updatedAt',
-    });
-
-    this.version(8).stores({
-      practiceTasks:        'id, category, order, isActive',
-      dailyCheckoffs:       'id, taskId, date, [taskId+date]',
-      vocabEntries:         'id, norwegian, reviewStatus, category, createdAt',
-      timerSessions:        'id, category, date',
-      writingSubmissions:   'id, date, level, fluencyRating, createdAt',
-      consumedResources:    'id, consumedAt',
-      difficultyRatings:    'id, sessionId, contentType, date, ratedAt',
-      grammarProgress:      '&ruleId, status, updatedAt',
-      conversationSessions: 'id, level, scenarioId, completedAt, createdAt',
-    });
-
-    this.version(9).stores({
-      practiceTasks:        'id, category, order, isActive',
-      dailyCheckoffs:       'id, taskId, date, [taskId+date]',
-      vocabEntries:         'id, norwegian, reviewStatus, category, createdAt',
-      timerSessions:        'id, category, date',
-      writingSubmissions:   'id, date, level, fluencyRating, createdAt',
-      consumedResources:    'id, consumedAt',
-      difficultyRatings:    'id, sessionId, contentType, date, ratedAt',
-      grammarProgress:      '&ruleId, status, updatedAt',
-      conversationSessions: 'id, level, scenarioId, completedAt, createdAt',
-      prepositionSessions:  'id, date, level, completedAt',
-    });
-
-    // v10: give grammarProgress a UUID primary key so Dexie Cloud can sync it.
-    // Previously it used the semantic ruleId as primary key; Dexie Cloud tried to
-    // replace it with a generated UUID on login, hitting "changing primary key".
-    this.version(10).stores({
-      practiceTasks:        'id, category, order, isActive',
-      dailyCheckoffs:       'id, taskId, date, [taskId+date]',
-      vocabEntries:         'id, norwegian, reviewStatus, category, createdAt',
-      timerSessions:        'id, category, date',
-      writingSubmissions:   'id, date, level, fluencyRating, createdAt',
-      consumedResources:    'id, consumedAt',
-      difficultyRatings:    'id, sessionId, contentType, date, ratedAt',
-      grammarProgress:      'id, &ruleId, status, updatedAt',
-      conversationSessions: 'id, level, scenarioId, completedAt, createdAt',
-      prepositionSessions:  'id, date, level, completedAt',
-});
-
-    // v11: add feedPosts table (lesefeed feature).
-    this.version(11).stores({
-      practiceTasks:        'id, category, order, isActive',
-      dailyCheckoffs:       'id, taskId, date, [taskId+date]',
-      vocabEntries:         'id, norwegian, reviewStatus, category, createdAt',
-      timerSessions:        'id, category, date',
-      writingSubmissions:   'id, date, level, fluencyRating, createdAt',
-      consumedResources:    'id, consumedAt',
-      difficultyRatings:    'id, sessionId, contentType, date, ratedAt',
-      grammarProgress:      'id, &ruleId, status, updatedAt',
-      conversationSessions: 'id, level, scenarioId, completedAt, createdAt',
-      prepositionSessions:  'id, date, level, completedAt',
-      feedPosts:            'id, subreddit, level, generatedAt, upvotedByUser',
-    });
-
-    // v12: revert grammarProgress primary key back to ruleId.
-    // v10 changed keyPath from ruleId → id, which caused IndexedDB to drop and
-    // recreate the store (wiping local data) and broke Dexie Cloud sync because
-    // cloud-side records are keyed by ruleId. This restores the original schema
-    // so cloud resync succeeds.
-    this.version(12).stores({
-      practiceTasks:        'id, category, order, isActive',
-      dailyCheckoffs:       'id, taskId, date, [taskId+date]',
-      vocabEntries:         'id, norwegian, reviewStatus, category, createdAt',
-      timerSessions:        'id, category, date',
-      writingSubmissions:   'id, date, level, fluencyRating, createdAt',
-      consumedResources:    'id, consumedAt',
-      difficultyRatings:    'id, sessionId, contentType, date, ratedAt',
-      grammarProgress:      '&ruleId, status, updatedAt',
-      conversationSessions: 'id, level, scenarioId, completedAt, createdAt',
-      prepositionSessions:  'id, date, level, completedAt',
-      feedPosts:            'id, subreddit, level, generatedAt, upvotedByUser',
-    });
+    super(DB_NAME, { addons: [dexieCloud] });
+    this.version(1).stores(SCHEMA);
   }
 }
 
 export const db = new TrackerDB();
 
-db.cloud.configure({
-  databaseUrl: 'https://zqrybn9ex.dexie.cloud',
-  requireAuth: false,
-});
+let cloudConfigured = false;
 
-async function waitForSyncToSettle(): Promise<void> {
+export function configureCloud() {
+  if (cloudConfigured) return;
+  cloudConfigured = true;
+  db.cloud.configure({
+    databaseUrl: 'https://zqrybn9ex.dexie.cloud',
+    requireAuth: false,
+  });
+}
+
+async function waitForSyncToSettle(timeoutMs: number): Promise<void> {
   return new Promise((resolve) => {
+    let settled = false;
     const subscription = db.cloud.syncState.subscribe(({ phase }) => {
       if (phase !== 'not-in-sync' && phase !== 'pushing' && phase !== 'pulling') {
+        settled = true;
         subscription.unsubscribe();
         resolve();
       }
     });
+    setTimeout(() => {
+      if (!settled) {
+        subscription.unsubscribe();
+        console.warn(`[db] Cloud sync did not settle within ${timeoutMs}ms; seeding defaults anyway`);
+        resolve();
+      }
+    }, timeoutMs);
   });
 }
 
@@ -322,10 +224,7 @@ export async function seedDefaults() {
 
   // Wait for cloud sync to settle before seeding to avoid duplicating cloud data
   // on a new device. Falls back after 5s for offline/error scenarios.
-  await Promise.race([
-    waitForSyncToSettle(),
-    new Promise<void>(resolve => setTimeout(resolve, 5000)),
-  ]);
+  await waitForSyncToSettle(5000);
 
   const countAfterSync = await db.practiceTasks.count();
   if (countAfterSync > 0) return;

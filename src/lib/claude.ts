@@ -1,3 +1,5 @@
+import { proxyFetch } from '@/lib/api-client';
+
 export interface Correction {
   original: string;
   corrected: string;
@@ -20,22 +22,18 @@ export async function correctNorwegianText(
   text: string,
   level: string,
 ): Promise<CorrectionResult> {
-  if (!PROXY_URL) {
-    throw new Error(
-      'Writing corrections are not configured. The NEXT_PUBLIC_CORRECTION_API_URL environment variable is missing.',
-    );
-  }
-
-  const response = await fetch(PROXY_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ text, level }),
-  });
-
-  if (!response.ok) {
-    const body = await response.json().catch(() => ({ error: 'Unknown error' }));
-    throw new Error(body.error || `API error (${response.status})`);
-  }
-
-  return (await response.json()) as CorrectionResult;
+  return proxyFetch<CorrectionResult>(
+    PROXY_URL,
+    { text, level },
+    {
+      required: ['corrections', 'correctedText', 'fluencyRating'],
+      shape: {
+        corrections: 'array',
+        correctedText: 'string',
+        fluencyRating: 'number',
+        vocabularySuggestions: 'array',
+      },
+    },
+    'Writing corrections',
+  );
 }

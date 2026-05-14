@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { db } from '@/lib/db';
 import * as ankiConnect from '@/lib/anki/anki-connect';
 import { mapAnkiScheduleToStatus, bestStatus, stripHtml } from '@/lib/anki/field-mapper';
@@ -27,6 +27,14 @@ export function useAnkiConnect() {
   const [decks, setDecks] = useState<string[]>([]);
   const [modelNames, setModelNames] = useState<string[]>([]);
   const [fieldNames, setFieldNames] = useState<string[]>([]);
+
+  const mountedRef = useRef(true);
+  const syncInFlight = useRef(false);
+
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => { mountedRef.current = false; };
+  }, []);
 
   useEffect(() => {
     const stored = localStorage.getItem(CONFIG_KEY);
@@ -80,6 +88,8 @@ export function useAnkiConnect() {
       setError('Please configure deck name and field mappings first.');
       return;
     }
+    if (syncInFlight.current) return; // ignore rapid re-clicks
+    syncInFlight.current = true;
 
     setSyncing(true);
     setError(null);
@@ -158,12 +168,17 @@ export function useAnkiConnect() {
         }
       }
 
-      setConfig({ lastSyncedAt: new Date().toISOString() });
-      setSyncResult({ added, updated, skipped });
+      if (mountedRef.current) {
+        setConfig({ lastSyncedAt: new Date().toISOString() });
+        setSyncResult({ added, updated, skipped });
+      }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Sync failed');
+      if (mountedRef.current) {
+        setError(err instanceof Error ? err.message : 'Sync failed');
+      }
     } finally {
-      setSyncing(false);
+      syncInFlight.current = false;
+      if (mountedRef.current) setSyncing(false);
     }
   }, [config, setConfig]);
 

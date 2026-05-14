@@ -41,3 +41,8 @@ yarn-error.log*
 next-env.d.ts
 
 dexie-cloud.key
+
+# local backup / debug artifacts
+data.ndjson
+zqrybn9ex-*.zip
+.playwright-mcp/

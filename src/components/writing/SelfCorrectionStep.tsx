@@ -23,6 +23,18 @@ function splitSentences(text: string): string[] {
   return text.split(/(?<=[.!?])\s+/).filter(s => s.trim().length > 0);
 }
 
+function HighlightedSentence({ sentence, mark }: { sentence: string; mark: string }) {
+  const idx = sentence.indexOf(mark);
+  if (idx === -1) return <>{sentence}</>;
+  return (
+    <>
+      {sentence.slice(0, idx)}
+      <mark>{mark}</mark>
+      {sentence.slice(idx + mark.length)}
+    </>
+  );
+}
+
 function findErrorsInSentences(text: string, correctionResult: CorrectionResult): ErrorItem[] {
   const sentences = splitSentences(text);
   const errors: ErrorItem[] = [];
@@ -122,11 +134,6 @@ export function SelfCorrectionStep({ originalText, correctionResult, onComplete 
     );
   }
 
-  const highlightedSentence = current.sentence.replace(
-    current.original,
-    `<mark>${current.original}</mark>`
-  );
-
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -140,10 +147,9 @@ export function SelfCorrectionStep({ originalText, correctionResult, onComplete 
 
       <div className={styles.sentenceCard}>
         <div className={styles.sentenceLabel}>Finn og fiks feilen:</div>
-        <div
-          className={styles.sentence}
-          dangerouslySetInnerHTML={{ __html: highlightedSentence }}
-        />
+        <div className={styles.sentence}>
+          <HighlightedSentence sentence={current.sentence} mark={current.original} />
+        </div>
       </div>
 
       {!feedback ? (

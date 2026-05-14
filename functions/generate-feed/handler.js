@@ -1,6 +1,7 @@
 import { pathToFileURL } from "url";
-
-const ANTHROPIC_API_URL = "https://api.anthropic.com/v1/messages";
+import { authorize, jsonResponse, serverError } from "./_shared/cors-and-auth.js";
+import { parseClaudeJson } from "./_shared/parse-claude-json.js";
+import { callAnthropic, extractText } from "./_shared/anthropic.js";
 
 const SUBREDDIT_TOPICS = {
   "r/norge": "general Norwegian life, news, culture, society",
@@ -10,18 +11,8 @@ const SUBREDDIT_TOPICS = {
   "r/oslo": "city life, urban topics, Oslo specifically",
   "r/humor": "jokes, funny observations, light-hearted humor",
 };
-
 const ALL_SUBREDDITS = Object.keys(SUBREDDIT_TOPICS);
-
-function corsHeaders(origin) {
-  const allowed = process.env.ALLOWED_ORIGIN || "*";
-  return {
-    "Access-Control-Allow-Origin": allowed === "*" ? "*" : origin,
-    "Access-Control-Allow-Methods": "POST, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type",
-    "Access-Control-Max-Age": "86400",
-  };
-}
+const VALID_LEVELS = ["A1", "A2", "B1", "B2", "C1"];
 
 function buildSystemPrompt(level, subreddits, count) {
   const levelInstructions = {
@@ -33,7 +24,7 @@ function buildSystemPrompt(level, subreddits, count) {
   };
 
   const subredditDescriptions = subreddits
-    .map(s => `- ${s}: ${SUBREDDIT_TOPICS[s] || "general topics"}`)
+    .map(s => `- ${s}: ${SUBREDDIT_TOPICS[s]}`)
     .join("\n");
 
   return `You generate fake Norwegian Reddit-style posts for language learners.
@@ -70,49 +61,21 @@ Respond ONLY with valid JSON in this exact format:
 }`;
 }
 
-export const handle = async (event, context, callback) => {
-  const origin = event.headers?.origin || "";
-  const headers = corsHeaders(origin);
-
-  if (event.httpMethod === "OPTIONS") {
-    return { statusCode: 204, headers, body: "" };
-  }
-
-  if (event.httpMethod !== "POST") {
-    return {
-      statusCode: 405,
-      headers: { ...headers, "Content-Type": "application/json" },
-      body: JSON.stringify({ error: "Method not allowed" }),
-    };
-  }
+export const handle = async event => {
+  const auth = authorize(event);
+  if (!auth.ok) return auth.response;
+  const { headers, body } = auth;
 
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
-    return {
-      statusCode: 500,
-      headers: { ...headers, "Content-Type": "application/json" },
-      body: JSON.stringify({ error: "Server misconfigured: missing API key" }),
-    };
+    return jsonResponse(500, headers, { error: "Server misconfigured: missing API key" });
   }
 
-  let level, count, subreddits;
-  try {
-    const body =
-      typeof event.body === "string" ? JSON.parse(event.body) : event.body;
-    level = body.level;
-    count = body.count;
-    subreddits = body.subreddits;
-  } catch {
-    return {
-      statusCode: 400,
-      headers: { ...headers, "Content-Type": "application/json" },
-      body: JSON.stringify({ error: "Invalid JSON body" }),
-    };
-  }
+  let level = body.level;
+  let count = body.count;
+  let subreddits = body.subreddits;
 
-  const validLevels = ["A1", "A2", "B1", "B2", "C1"];
-  if (!level || !validLevels.includes(level)) level = "A2";
-
+  if (!level || !VALID_LEVELS.includes(level)) level = "A2";
   count = Math.max(1, Math.min(10, parseInt(count, 10) || 5));
 
   if (!Array.isArray(subreddits) || subreddits.length === 0) {
@@ -123,73 +86,39 @@ export const handle = async (event, context, callback) => {
   }
 
   try {
-    const response = await fetch(ANTHROPIC_API_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-api-key": apiKey,
-        "anthropic-version": "2023-06-01",
-      },
-      body: JSON.stringify({
-        model: "claude-haiku-4-5-20251001",
-        max_tokens: 3000,
-        system: buildSystemPrompt(level, subreddits, count),
-        messages: [
-          {
-            role: "user",
-            content: `Generate ${count} Norwegian Reddit posts at ${level} level.`,
-          },
-        ],
-      }),
+    const data = await callAnthropic({
+      apiKey,
+      model: "claude-haiku-4-5-20251001",
+      maxTokens: 3000,
+      system: buildSystemPrompt(level, subreddits, count),
+      messages: [
+        {
+          role: "user",
+          content: `Generate ${count} Norwegian Reddit posts at ${level} level.`,
+        },
+      ],
     });
 
-    if (!response.ok) {
-      return {
-        statusCode: 502,
-        headers: { ...headers, "Content-Type": "application/json" },
-        body: JSON.stringify({
-          error: `Upstream API error (${response.status})`,
-        }),
-      };
-    }
-
-    const data = await response.json();
-    const content = data.content?.[0]?.text;
+    const content = extractText(data);
     if (!content) {
-      return {
-        statusCode: 502,
-        headers: { ...headers, "Content-Type": "application/json" },
-        body: JSON.stringify({ error: "No response from upstream API" }),
-      };
+      return jsonResponse(502, headers, { error: "No response from upstream API" });
     }
 
-    const jsonMatch = content.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) {
-      return {
-        statusCode: 502,
-        headers: { ...headers, "Content-Type": "application/json" },
-        body: JSON.stringify({ error: "Could not parse feed response" }),
-      };
-    }
+    const result = parseClaudeJson(content, {
+      required: ["posts"],
+      shape: { posts: "array" },
+    });
 
-    const result = JSON.parse(jsonMatch[0]);
-
-    // Attach the requested level to each post
     if (Array.isArray(result.posts)) {
       result.posts = result.posts.map(p => ({ ...p, level }));
     }
 
-    return {
-      statusCode: 200,
-      headers: { ...headers, "Content-Type": "application/json" },
-      body: JSON.stringify(result),
-    };
+    return jsonResponse(200, headers, result);
   } catch (err) {
-    return {
-      statusCode: 500,
-      headers: { ...headers, "Content-Type": "application/json" },
-      body: JSON.stringify({ error: "Internal server error" }),
-    };
+    if (err.status) {
+      return jsonResponse(502, headers, { error: err.message });
+    }
+    return serverError(headers, err);
   }
 };
 

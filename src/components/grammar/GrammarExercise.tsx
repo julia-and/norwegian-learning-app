@@ -2,19 +2,11 @@
 
 import { useState, useMemo } from 'react';
 import type { GrammarExercise as GrammarExerciseType } from '@/lib/grammar-rules';
+import { shuffle } from '@/lib/utils';
 import styles from './grammar-exercise.module.css';
 
 interface GrammarExerciseProps {
   exercises: GrammarExerciseType[];
-}
-
-function shuffle<T>(arr: T[]): T[] {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
 }
 
 type Phase = 'prompt' | 'correct' | 'incorrect';

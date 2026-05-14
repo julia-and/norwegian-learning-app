@@ -14,6 +14,7 @@ import { AnkiConnectSettings } from '@/components/anki/AnkiConnectSettings';
 import { SyncSettings } from '@/components/sync/SyncSettings';
 import { DayPicker } from '@/components/settings/DayPicker';
 import { db, type Category } from '@/lib/db';
+import { exportAllData, downloadExport, importAllData } from '@/lib/data-transfer';
 import { CATEGORY_CONFIG } from '@/lib/constants';
 import { useTheme } from '@/components/layout/ThemeProvider';
 import { usePreferredLevel } from '@/lib/hooks/use-preferred-level';
@@ -60,25 +61,8 @@ export default function SettingsPage() {
   };
 
   const exportData = async () => {
-    const data = {
-      practiceTasks: await db.practiceTasks.toArray(),
-      dailyCheckoffs: await db.dailyCheckoffs.toArray(),
-      vocabEntries: await db.vocabEntries.toArray(),
-      timerSessions: await db.timerSessions.toArray(),
-      writingSubmissions: await db.writingSubmissions.toArray(),
-      consumedResources: await db.consumedResources.toArray(),
-      difficultyRatings: await db.difficultyRatings.toArray(),
-      grammarProgress: await db.grammarProgress.toArray(),
-      conversationSessions: await db.conversationSessions.toArray(),
-      exportedAt: new Date().toISOString(),
-    };
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `norsk-tracker-${new Date().toISOString().split('T')[0]}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
+    const file = await exportAllData();
+    downloadExport(file);
   };
 
   const importData = () => {
@@ -89,91 +73,20 @@ export default function SettingsPage() {
       const file = (e.target as HTMLInputElement).files?.[0];
       if (!file) return;
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      let data: any;
+      let parsed: unknown;
       try {
-        data = JSON.parse(await file.text());
+        parsed = JSON.parse(await file.text());
       } catch {
         alert('Import mislyktes: ugyldig JSON-fil. Ingen data ble endret.');
         return;
       }
 
       try {
-        await db.transaction('rw', [
-          db.practiceTasks, db.dailyCheckoffs, db.vocabEntries,
-          db.timerSessions, db.writingSubmissions, db.consumedResources,
-          db.difficultyRatings, db.grammarProgress, db.conversationSessions,
-        ], async () => {
-          if (data.practiceTasks) {
-            await db.practiceTasks.clear();
-            await db.practiceTasks.bulkAdd(data.practiceTasks.map((t: Record<string, unknown>) => ({
-              ...t,
-              activeDays: typeof t.activeDays === 'number' ? t.activeDays : 127,
-              createdAt: new Date(t.createdAt as string),
-            })));
-          }
-          if (data.dailyCheckoffs) {
-            await db.dailyCheckoffs.clear();
-            await db.dailyCheckoffs.bulkAdd(data.dailyCheckoffs.map((c: Record<string, unknown>) => ({
-              ...c,
-              completedAt: new Date(c.completedAt as string),
-            })));
-          }
-          if (data.vocabEntries) {
-            await db.vocabEntries.clear();
-            await db.vocabEntries.bulkAdd(data.vocabEntries.map((v: Record<string, unknown>) => ({
-              ...v,
-              createdAt: new Date(v.createdAt as string),
-              updatedAt: new Date(v.updatedAt as string),
-            })));
-          }
-          if (data.timerSessions) {
-            await db.timerSessions.clear();
-            await db.timerSessions.bulkAdd(data.timerSessions.map((s: Record<string, unknown>) => ({
-              ...s,
-              startedAt: new Date(s.startedAt as string),
-              endedAt: new Date(s.endedAt as string),
-            })));
-          }
-          if (data.writingSubmissions) {
-            await db.writingSubmissions.clear();
-            await db.writingSubmissions.bulkAdd(data.writingSubmissions.map((s: Record<string, unknown>) => ({
-              ...s,
-              createdAt: new Date(s.createdAt as string),
-            })));
-          }
-          if (data.consumedResources) {
-            await db.consumedResources.clear();
-            await db.consumedResources.bulkAdd(data.consumedResources.map((r: Record<string, unknown>) => ({
-              ...r,
-              consumedAt: new Date(r.consumedAt as string),
-            })));
-          }
-          if (data.difficultyRatings) {
-            await db.difficultyRatings.clear();
-            await db.difficultyRatings.bulkAdd(data.difficultyRatings.map((r: Record<string, unknown>) => ({
-              ...r,
-              ratedAt: new Date(r.ratedAt as string),
-            })));
-          }
-          if (data.grammarProgress) {
-            await db.grammarProgress.clear();
-            await db.grammarProgress.bulkPut(data.grammarProgress.map((r: Record<string, unknown>) => ({
-              ...r,
-              id: (r.id as string) ?? crypto.randomUUID(),
-              updatedAt: new Date(r.updatedAt as string),
-            })));
-          }
-          if (data.conversationSessions) {
-            await db.conversationSessions.clear();
-            await db.conversationSessions.bulkAdd(data.conversationSessions.map((s: Record<string, unknown>) => ({
-              ...s,
-              createdAt: new Date(s.createdAt as string),
-              completedAt: s.completedAt ? new Date(s.completedAt as string) : undefined,
-            })));
-          }
-        });
-        alert('Data importert!');
+        const result = await importAllData(parsed);
+        const lines = Object.entries(result.perStore)
+          .map(([name, r]) => `${name}: ${r.added} rader`)
+          .join('\n');
+        alert(`Data importert!\n\n${lines}`);
       } catch (err) {
         alert(`Import mislyktes: ${err instanceof Error ? err.message : String(err)}. Ingen data ble endret.`);
       }

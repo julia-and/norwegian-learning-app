@@ -1,3 +1,5 @@
+import { proxyFetch } from '@/lib/api-client';
+
 export interface FeedCommentData {
   author: string;
   body: string;
@@ -26,22 +28,13 @@ export async function generateFeedPosts(
   count: number,
   subreddits?: string[],
 ): Promise<GenerateFeedResult> {
-  if (!FEED_API_URL) {
-    throw new Error(
-      'Feed API is not configured. The NEXT_PUBLIC_FEED_API_URL environment variable is missing.',
-    );
-  }
-
-  const response = await fetch(FEED_API_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ level, count, subreddits }),
-  });
-
-  if (!response.ok) {
-    const body = await response.json().catch(() => ({ error: 'Unknown error' }));
-    throw new Error(body.error || `API error (${response.status})`);
-  }
-
-  return (await response.json()) as GenerateFeedResult;
+  return proxyFetch<GenerateFeedResult>(
+    FEED_API_URL,
+    { level, count, subreddits },
+    {
+      required: ['posts'],
+      shape: { posts: 'array' },
+    },
+    'Feed API',
+  );
 }

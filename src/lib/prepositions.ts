@@ -1,4 +1,5 @@
 import type { CEFRLevel } from '@/lib/resources';
+import { shuffle } from '@/lib/utils';
 
 export interface PrepGuideEntry {
   id: string;
@@ -673,6 +674,5 @@ export function sampleExercises(level: CEFRLevel, n = 10): PrepExercise[] {
     : [level];
 
   const pool = PREP_EXERCISES.filter(e => allowed.includes(e.level));
-  const shuffled = [...pool].sort(() => Math.random() - 0.5);
-  return shuffled.slice(0, n);
+  return shuffle(pool).slice(0, n);
 }
