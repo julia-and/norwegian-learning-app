@@ -193,7 +193,7 @@ export function configureCloud() {
   if (cloudConfigured) return;
   cloudConfigured = true;
   db.cloud.configure({
-    databaseUrl: 'https://zqrybn9ex.dexie.cloud',
+    databaseUrl: 'https://zaeyxf28k.dexie.cloud',
     requireAuth: false,
   });
 }

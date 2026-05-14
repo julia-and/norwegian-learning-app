@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Always run from the project root so `out/` and `npm run build` resolve
+# correctly regardless of where the script was invoked from.
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+cd "$(dirname "$SCRIPT_DIR")"
+
 # Deploy Norsk Tracker to Scaleway Object Storage
 #
 # Prerequisites:
