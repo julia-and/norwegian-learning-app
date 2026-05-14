@@ -3,6 +3,12 @@ name: Deploy to Scaleway
 on:
   push:
     branches: [main]
+  workflow_dispatch:
+    inputs:
+      redeploy_functions:
+        description: 'Redeploy all serverless functions (ignore path filter)'
+        type: boolean
+        default: false
 
 concurrency:
   group: deploy
@@ -29,6 +35,7 @@ jobs:
           NEXT_PUBLIC_CORRECTION_API_URL: ${{ vars.NEXT_PUBLIC_CORRECTION_API_URL }}
           NEXT_PUBLIC_CONVERSATION_API_URL: ${{ vars.NEXT_PUBLIC_CONVERSATION_API_URL }}
           NEXT_PUBLIC_FEED_API_URL: ${{ vars.NEXT_PUBLIC_FEED_API_URL }}
+          NEXT_PUBLIC_APP_SHARED_SECRET: ${{ secrets.NEXT_PUBLIC_APP_SHARED_SECRET }}
 
       - name: Deploy to Scaleway S3
         env:
@@ -84,7 +91,7 @@ jobs:
 
   deploy-correct:
     needs: detect-changes
-    if: needs.detect-changes.outputs.correct == 'true'
+    if: needs.detect-changes.outputs.correct == 'true' || inputs.redeploy_functions
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -113,7 +120,7 @@ jobs:
 
   deploy-converse:
     needs: detect-changes
-    if: needs.detect-changes.outputs.converse == 'true'
+    if: needs.detect-changes.outputs.converse == 'true' || inputs.redeploy_functions
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -142,7 +149,7 @@ jobs:
 
   deploy-generate-feed:
     needs: detect-changes
-    if: needs.detect-changes.outputs.generate-feed == 'true'
+    if: needs.detect-changes.outputs.generate-feed == 'true' || inputs.redeploy_functions
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -171,7 +178,7 @@ jobs:
 
   deploy-index-resources:
     needs: detect-changes
-    if: needs.detect-changes.outputs.index-resources == 'true'
+    if: needs.detect-changes.outputs.index-resources == 'true' || inputs.redeploy_functions
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
